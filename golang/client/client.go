@@ -253,8 +253,9 @@ func (client *Client) DoRequest(version string, protocol string, method string, 
 			if util.Is4xx(response_.StatusCode) || util.Is5xx(response_.StatusCode) {
 				err := util.AssertAsMap(result)
 				_err = tea.NewSDKError(map[string]interface{}{
+					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])) + "Error",
 					"message": "code: " + tea.ToString(response_.StatusCode) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " requestid: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
-					"name":    tea.ToString(DefaultAny(err["Code"], err["code"])) + "Error",
+					"data":    err,
 				})
 				return nil, _err
 			}
