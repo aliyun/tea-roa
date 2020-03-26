@@ -1,0 +1,144 @@
+import Util;
+import Credential;
+import ROAUtil;
+
+type @protocol = string
+type @readTimeout = number
+type @connectTimeout = number
+type @httpProxy = string
+type @httpsProxy = string
+type @noProxy = string
+type @maxIdleConns = number
+type @endpointHost = string
+type @credential = Credential
+
+model Config {
+  accessKeyId?: string,
+  accessKeySecret?: string,
+  type?: string,
+  securityToken?: string,
+  protocol?: string,
+  readTimeout?: number,
+  connectTimeout?: number,
+  httpProxy?: string,
+  httpsProxy?: string,
+  endpoint?: string,
+  noProxy?: string,
+  maxIdleConns?: number
+}
+
+init(config: Config) {
+  if (Util.isUnset(config)) {
+    throw {
+      name = 'ParameterMissing',
+      message = '\'config\' can not be unset'
+    };
+  }
+
+  if (Util.empty(config.endpoint)) {
+    throw {
+      name = 'ParameterMissing',
+      message = '\'config.endpoint\' can not be empty'
+    };
+  }
+
+  if (Util.empty(config.type)) {
+    config.type = 'access_key';
+  }
+  var credentialConfig = new Credential.Config{
+    accessKeyId = config.accessKeyId,
+    type = config.type,
+    accessKeySecret = config.accessKeySecret,
+    securityToken = config.securityToken
+  };
+  @credential = new Credential(credentialConfig);
+  @protocol = config.protocol;
+  @endpointHost = config.endpoint;
+  @readTimeout = config.readTimeout;
+  @connectTimeout = config.connectTimeout;
+  @httpProxy = config.httpProxy;
+  @httpsProxy = config.httpsProxy;
+  @maxIdleConns = config.maxIdleConns;
+}
+
+api doRequest(version: string, protocol: string, method: string, authType: string, pathname: string, query: map[string]string, headers: map[string]string, body: any, runtime: Util.RuntimeOptions): object {
+  __request.protocol = Util.defaultString(@protocol, protocol);
+  __request.method = method;
+  __request.pathname = pathname;
+  __request.headers = {
+    date = Util.getDateUTCString(),
+    host = @endpointHost,
+    accept = 'application/json',
+    x-acs-signature-nonce = Util.getNonce(),
+    x-acs-signature-method = 'HMAC-SHA1',
+    x-acs-signature-version = '1.0',
+    x-acs-version = version,
+    // user-agent': helper.DEFAULT_UA,
+    // x-sdk-client': helper.DEFAULT_CLIENT
+    ...headers
+  };
+
+  if (!Util.isUnset(body)) {
+    __request.body = Util.toJSONString(body);
+  }
+
+  if (!Util.isUnset(query)) {
+    __request.query = query;
+  }
+
+  if (!Util.equalString(authType, 'Anonymous')) {
+    var accessKeyId = @credential.getAccessKeyId();
+    var accessKeySecret = @credential.getAccessKeySecret();
+    var securityToken = @credential.getSecurityToken();
+    if (!Util.empty(securityToken)) {
+      __request.headers.x-acs-accesskey-id = accessKeyId;
+      __request.headers.x-acs-security-token = securityToken;
+    }
+
+    var stringToSign = ROAUtil.getStringToSign(__request);
+    __request.headers.authorization = `acs ${accessKeyId}:${ROAUtil.getSignature(stringToSign, accessKeySecret)}`;
+  }
+} returns {
+  if (Util.equalNumber(__response.statusCode, 204)) {
+    return {
+      headers = __response.headers
+    };
+  }
+  var result = Util.readAsJSON(__response.body);
+
+  if (Util.is4xx(__response.statusCode) || Util.is5xx(__response.statusCode)) {
+    var err = Util.assertAsMap(result);
+    throw {
+      message = `code: ${__response.statusCode}, ${defaultAny(err.Message, err.message)} requestid: ${defaultAny(err.RequestId, err.requestId)}`,
+      name = `${defaultAny(err.Code, err.code)}Error`
+    }
+  }
+  return {
+    headers = __response.headers,
+    body = result
+  };
+} runtime {
+  timeouted = 'retry',
+  readTimeout = Util.defaultNumber(runtime.readTimeout, @readTimeout),
+  connectTimeout = Util.defaultNumber(runtime.connectTimeout, @connectTimeout),
+  httpProxy = Util.defaultString(runtime.httpProxy, @httpProxy),
+  httpsProxy = Util.defaultString(runtime.httpsProxy, @httpsProxy),
+  noProxy = Util.defaultString(runtime.noProxy, @noProxy),
+  maxIdleConns = Util.defaultNumber(runtime.maxIdleConns, @maxIdleConns),
+  retry = {
+    retryable = runtime.autoretry,
+    maxAttempts = Util.defaultNumber(runtime.maxAttempts, 3)
+  },
+  backoff = {
+    policy = Util.defaultString(runtime.backoffPolicy, 'no'),
+    period = Util.defaultNumber(runtime.backoffPeriod, 1)
+  },
+  ignoreSSL = runtime.ignoreSSL
+}
+
+static function defaultAny(inputValue: any, defaultValue: any): any {
+  if (Util.isUnset(inputValue)) {
+    return defaultValue;
+  }
+  return inputValue;
+}

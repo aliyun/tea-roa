@@ -1,0 +1,33 @@
+{
+  "scope": "alibabacloud",
+  "name": "ROA",
+  "version": "0.1.1",
+  "main": "./roa.tea",
+  "libraries": {
+    "Util": "alibabacloud:Util:*",
+    "ROAUtil": "alibabacloud:ROAUtil:*",
+    "Credential": "alibabacloud:Credential:*"
+  },
+  "releases": {
+    "ts": "@ali/roa-client:^0.0.2",
+    "go": "gitlab.alibaba-inc.com/alicloud-sdk/tea-roa/golang/client:v0.0.1",
+    "csharp": "AlibabaCloud.ROAClient:0.0.1",
+    "java": "com.aliyun:tea-roa:0.0.1",
+    "php": "alibabacloud/tea-roa:^0.0.1"
+  },
+  "csharp": {
+    "namespace": "AlibabaCloud.ROAClient"
+  },
+  "java": {
+    "package": "com.aliyun.tearoa"
+  },
+  "php": {
+    "package": "AlibabaCloud.Tea.Roa",
+		"clientName": "Roa",
+		"packageInfo": {
+			"name": "alibabacloud/tea-roa",
+			"desc": "Alibaba Cloud ROA Client",
+			"github": "https://github.com/aliyun/tea-roa"
+		}
+  }
+}

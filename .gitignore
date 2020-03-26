@@ -1,0 +1,13 @@
+libraries
+.libraries.json
+ts/node_modules
+ts/dist
+go.sum
+
+**/csharp/**/bin/
+**/csharp/**/obj/
+**/csharp/**/.vs/
+
+.idea/
+target/
+*.iml
