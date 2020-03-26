@@ -109,8 +109,9 @@ api doRequest(version: string, protocol: string, method: string, authType: strin
   if (Util.is4xx(__response.statusCode) || Util.is5xx(__response.statusCode)) {
     var err = Util.assertAsMap(result);
     throw {
+      code = `${defaultAny(err.Code, err.code)}Error`,
       message = `code: ${__response.statusCode}, ${defaultAny(err.Message, err.message)} requestid: ${defaultAny(err.RequestId, err.requestId)}`,
-      name = `${defaultAny(err.Code, err.code)}Error`
+      data = err,
     }
   }
   return {
