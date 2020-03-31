@@ -11,3 +11,6 @@ go.sum
 .idea/
 target/
 *.iml
+.classpath
+.project
+.settings/
