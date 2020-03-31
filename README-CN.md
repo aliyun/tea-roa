@@ -6,7 +6,7 @@
 ## 安装
 
 - [ROA Client for Go](./golang/README-CN.md)
-
+- [ROA Client for Java](./java/README-CN.md)
 
 ## 问题
 
