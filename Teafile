@@ -3,6 +3,12 @@
   "name": "ROA",
   "version": "0.1.2",
   "main": "./roa.tea",
+  "maintainers": [
+    {
+      "name": "Alibaba Cloud SDK",
+      "email": "sdk-team@alibabacloud.com"
+    }
+  ],
   "libraries": {
     "Util": "alibabacloud:Util:*",
     "ROAUtil": "alibabacloud:ROAUtil:*",
@@ -23,11 +29,11 @@
   },
   "php": {
     "package": "AlibabaCloud.Tea.Roa",
-		"clientName": "Roa",
-		"packageInfo": {
-			"name": "alibabacloud/tea-roa",
-			"desc": "Alibaba Cloud ROA Client",
-			"github": "https://github.com/aliyun/tea-roa"
-		}
+    "clientName": "Roa",
+    "packageInfo": {
+      "name": "alibabacloud/tea-roa",
+      "desc": "Alibaba Cloud ROA Client",
+      "github": "https://github.com/aliyun/tea-roa"
+    }
   }
 }
