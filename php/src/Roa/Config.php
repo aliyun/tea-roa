@@ -1,11 +1,13 @@
 <?php
 
 // This file is auto-generated, don't edit it. Thanks.
+
 namespace AlibabaCloud\Tea\Roa\Roa;
 
 use AlibabaCloud\Tea\Model;
 
-class Config extends Model{
+class Config extends Model
+{
     public $accessKeyId;
     public $accessKeySecret;
     public $type;
