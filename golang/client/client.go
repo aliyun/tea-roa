@@ -21,6 +21,8 @@ type Config struct {
 	Endpoint        *string `json:"endpoint" xml:"endpoint"`
 	NoProxy         *string `json:"noProxy" xml:"noProxy"`
 	MaxIdleConns    *int    `json:"maxIdleConns" xml:"maxIdleConns"`
+	Network         *string `json:"network" xml:"network"`
+	Suffix          *string `json:"suffix" xml:"suffix"`
 }
 
 func (s Config) String() string {
@@ -91,6 +93,16 @@ func (s *Config) SetMaxIdleConns(v int) *Config {
 	return s
 }
 
+func (s *Config) SetNetwork(v string) *Config {
+	s.Network = &v
+	return s
+}
+
+func (s *Config) SetSuffix(v string) *Config {
+	s.Suffix = &v
+	return s
+}
+
 type Client struct {
 	Protocol       string
 	ReadTimeout    int
@@ -100,6 +112,11 @@ type Client struct {
 	NoProxy        string
 	MaxIdleConns   int
 	EndpointHost   string
+	Network        string
+	EndpointRule   string
+	EndpointMap    map[string]string
+	Suffix         string
+	ProductId      string
 	Credential     credential.Credential
 }
 
@@ -141,6 +158,8 @@ func (client *Client) Init(config *Config) (_err error) {
 		return _err
 	}
 
+	client.Network = tea.StringValue(config.Network)
+	client.Suffix = tea.StringValue(config.Suffix)
 	client.Protocol = tea.StringValue(config.Protocol)
 	client.EndpointHost = tea.StringValue(config.Endpoint)
 	client.ReadTimeout = tea.IntValue(config.ReadTimeout)
@@ -283,4 +302,16 @@ func DefaultAny(inputValue interface{}, defaultValue interface{}) (_result inter
 
 	_result = inputValue
 	return _result
+}
+
+func (client *Client) CheckConfig(config *Config) (_err error) {
+	if util.Empty(client.EndpointRule) && util.Empty(tea.StringValue(config.Endpoint)) {
+		_err = tea.NewSDKError(map[string]interface{}{
+			"name":    "ParameterMissing",
+			"message": "'config.endpoint' can not be empty",
+		})
+		return _err
+	}
+
+	return _err
 }
