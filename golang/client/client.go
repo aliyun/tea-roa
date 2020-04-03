@@ -14,6 +14,7 @@ type Config struct {
 	Type            *string `json:"type" xml:"type"`
 	SecurityToken   *string `json:"securityToken" xml:"securityToken"`
 	Protocol        *string `json:"protocol" xml:"protocol"`
+	RegionId        *string `json:"regionId" xml:"regionId"`
 	ReadTimeout     *int    `json:"readTimeout" xml:"readTimeout"`
 	ConnectTimeout  *int    `json:"connectTimeout" xml:"connectTimeout"`
 	HttpProxy       *string `json:"httpProxy" xml:"httpProxy"`
@@ -55,6 +56,11 @@ func (s *Config) SetSecurityToken(v string) *Config {
 
 func (s *Config) SetProtocol(v string) *Config {
 	s.Protocol = &v
+	return s
+}
+
+func (s *Config) SetRegionId(v string) *Config {
+	s.RegionId = &v
 	return s
 }
 
@@ -117,6 +123,7 @@ type Client struct {
 	EndpointMap    map[string]string
 	Suffix         string
 	ProductId      string
+	RegionId       string
 	Credential     credential.Credential
 }
 
@@ -150,6 +157,7 @@ func (client *Client) Init(config *Config) (_err error) {
 	}
 
 	client.Network = tea.StringValue(config.Network)
+	client.RegionId = tea.StringValue(config.RegionId)
 	client.Suffix = tea.StringValue(config.Suffix)
 	client.Protocol = tea.StringValue(config.Protocol)
 	client.EndpointHost = tea.StringValue(config.Endpoint)
