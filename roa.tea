@@ -15,6 +15,7 @@ type @endpointRule = string
 type @endpointMap = map[string]string
 type @suffix = string
 type @productId = string
+type @regionId = string
 type @credential = Credential
 
 model Config {
@@ -23,6 +24,7 @@ model Config {
   type?: string,
   securityToken?: string,
   protocol?: string,
+  regionId?: string,
   readTimeout?: number,
   connectTimeout?: number,
   httpProxy?: string,
@@ -50,6 +52,7 @@ init(config: Config) {
   } 
   
   @network = config.network;
+  @regionId = config.regionId;
   @suffix = config.suffix;
   @protocol = config.protocol;
   @endpointHost = config.endpoint;
