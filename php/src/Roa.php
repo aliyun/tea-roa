@@ -24,32 +24,32 @@ class Roa
     private $_noProxy;
     private $_maxIdleConns;
     private $_endpointHost;
+    private $_network;
+    private $_endpointRule;
+    private $_endpointMap;
+    private $_suffix;
+    private $_productId;
+    private $_regionId;
     private $_credential;
 
     public function __construct(Config $config)
     {
+        $credentialConfig = null;
         if (Utils::isUnset($config)) {
-            throw new TeaError([
-                'name'    => 'ParameterMissing',
-                'message' => "'config' can not be unset",
+            $config            = new Config([]);
+            $this->_credential = new Credential(null);
+        } else {
+            $credentialConfig = new \AlibabaCloud\Credentials\Credential\Config([
+                'accessKeyId'     => $config->accessKeyId,
+                'type'            => $config->type,
+                'accessKeySecret' => $config->accessKeySecret,
+                'securityToken'   => $config->securityToken,
             ]);
+            $this->_credential = new Credential($credentialConfig);
         }
-        if (Utils::_empty($config->endpoint)) {
-            throw new TeaError([
-                'name'    => 'ParameterMissing',
-                'message' => "'config.endpoint' can not be empty",
-            ]);
-        }
-        if (Utils::_empty($config->type)) {
-            $config->type = 'access_key';
-        }
-        $credentialConfig = new \AlibabaCloud\Credentials\Credential\Config([
-            'accessKeyId'     => $config->accessKeyId,
-            'type'            => $config->type,
-            'accessKeySecret' => $config->accessKeySecret,
-            'securityToken'   => $config->securityToken,
-        ]);
-        $this->_credential     = new Credential($credentialConfig);
+        $this->_network        = $config->network;
+        $this->_regionId       = $config->regionId;
+        $this->_suffix         = $config->suffix;
         $this->_protocol       = $config->protocol;
         $this->_endpointHost   = $config->endpoint;
         $this->_readTimeout    = $config->readTimeout;
@@ -188,5 +188,18 @@ class Roa
         }
 
         return $inputValue;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function checkConfig(Config $config)
+    {
+        if (Utils::_empty($this->_endpointRule) && Utils::_empty($config->endpoint)) {
+            throw new TeaError([
+                'name'    => 'ParameterMissing',
+                'message' => "'config.endpoint' can not be empty",
+            ]);
+        }
     }
 }
