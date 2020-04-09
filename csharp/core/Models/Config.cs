@@ -29,6 +29,10 @@ namespace AlibabaCloud.ROAClient.Models
         [Validation(Required=false)]
         public string Protocol { get; set; }
 
+        [NameInMap("regionId")]
+        [Validation(Required=false)]
+        public string RegionId { get; set; }
+
         [NameInMap("readTimeout")]
         [Validation(Required=false)]
         public int? ReadTimeout { get; set; }
@@ -56,6 +60,14 @@ namespace AlibabaCloud.ROAClient.Models
         [NameInMap("maxIdleConns")]
         [Validation(Required=false)]
         public int? MaxIdleConns { get; set; }
+
+        [NameInMap("network")]
+        [Validation(Required=false)]
+        public string Network { get; set; }
+
+        [NameInMap("suffix")]
+        [Validation(Required=false)]
+        public string Suffix { get; set; }
 
     }
 

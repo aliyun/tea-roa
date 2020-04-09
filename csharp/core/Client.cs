@@ -15,46 +15,44 @@ namespace AlibabaCloud.ROAClient
 {
     public class Client 
     {
-        private string _protocol;
-        private int? _readTimeout;
-        private int? _connectTimeout;
-        private string _httpProxy;
-        private string _httpsProxy;
-        private string _noProxy;
-        private int? _maxIdleConns;
-        private string _endpointHost;
-        private Aliyun.Credentials.Client _credential;
+        protected string _protocol;
+        protected int? _readTimeout;
+        protected int? _connectTimeout;
+        protected string _httpProxy;
+        protected string _httpsProxy;
+        protected string _noProxy;
+        protected int? _maxIdleConns;
+        protected string _endpointHost;
+        protected string _network;
+        protected string _endpointRule;
+        protected Dictionary<string, string> _endpointMap;
+        protected string _suffix;
+        protected string _productId;
+        protected string _regionId;
+        protected Aliyun.Credentials.Client _credential;
 
         public Client(Config config)
         {
+            Aliyun.Credentials.Models.Config credentialConfig = null;
             if (AlibabaCloud.TeaUtil.Common.IsUnset(config.ToMap()))
             {
-                throw new TeaException(new Dictionary<string, string>
+                config = new Config();
+                this._credential = new Aliyun.Credentials.Client(null);
+            }
+            else
+            {
+                credentialConfig = new Aliyun.Credentials.Models.Config
                 {
-                    {"name", "ParameterMissing"},
-                    {"message", "'config' can not be unset"},
-                });
+                    AccessKeyId = config.AccessKeyId,
+                    Type = config.Type,
+                    AccessKeySecret = config.AccessKeySecret,
+                    SecurityToken = config.SecurityToken,
+                };
+                this._credential = new Aliyun.Credentials.Client(credentialConfig);
             }
-            if (AlibabaCloud.TeaUtil.Common.Empty(config.Endpoint))
-            {
-                throw new TeaException(new Dictionary<string, string>
-                {
-                    {"name", "ParameterMissing"},
-                    {"message", "'config.endpoint' can not be empty"},
-                });
-            }
-            if (AlibabaCloud.TeaUtil.Common.Empty(config.Type))
-            {
-                config.Type = "access_key";
-            }
-            Aliyun.Credentials.Models.Config credentialConfig = new Aliyun.Credentials.Models.Config
-            {
-                AccessKeyId = config.AccessKeyId,
-                Type = config.Type,
-                AccessKeySecret = config.AccessKeySecret,
-                SecurityToken = config.SecurityToken,
-            };
-            this._credential = new Aliyun.Credentials.Client(credentialConfig);
+            this._network = config.Network;
+            this._regionId = config.RegionId;
+            this._suffix = config.Suffix;
             this._protocol = config.Protocol;
             this._endpointHost = config.Endpoint;
             this._readTimeout = config.ReadTimeout;
@@ -313,6 +311,18 @@ namespace AlibabaCloud.ROAClient
                 return defaultValue;
             }
             return inputValue;
+        }
+
+        public void CheckConfig(Config config)
+        {
+            if (AlibabaCloud.TeaUtil.Common.Empty(_endpointRule) && AlibabaCloud.TeaUtil.Common.Empty(config.Endpoint))
+            {
+                throw new TeaException(new Dictionary<string, string>
+                {
+                    {"name", "ParameterMissing"},
+                    {"message", "'config.endpoint' can not be empty"},
+                });
+            }
         }
 
     }
