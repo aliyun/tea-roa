@@ -19,6 +19,9 @@ public class Config extends TeaModel {
     @NameInMap("protocol")
     public String protocol;
 
+    @NameInMap("regionId")
+    public String regionId;
+
     @NameInMap("readTimeout")
     public Integer readTimeout;
 
@@ -39,6 +42,12 @@ public class Config extends TeaModel {
 
     @NameInMap("maxIdleConns")
     public Integer maxIdleConns;
+
+    @NameInMap("network")
+    public String network;
+
+    @NameInMap("suffix")
+    public String suffix;
 
     public static Config build(java.util.Map<String, ?> map) throws Exception {
         Config self = new Config();
