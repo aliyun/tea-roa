@@ -12,7 +12,8 @@
   "require": {
     "php": ">5.5",
     "alibabacloud/tea-utils": "^0.2.0",
-    "alibabacloud/credentials": "^1.1"
+    "alibabacloud/credentials": "^1.1",
+    "alibabacloud/tea-roa-utils": "^0.1.1"
   },
   "autoload": {
     "psr-4": {
