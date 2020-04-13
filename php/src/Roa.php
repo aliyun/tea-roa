@@ -94,9 +94,10 @@ class Roa
             ],
             'ignoreSSL' => $runtime->ignoreSSL,
         ];
-        $_lastRequest = null;
-        $_now         = time();
-        $_retryTimes  = 0;
+        $_lastRequest   = null;
+        $_lastException = null;
+        $_now           = time();
+        $_retryTimes    = 0;
         while (Tea::allowRetry($_runtime['retry'], $_retryTimes, $_now)) {
             if ($_retryTimes > 0) {
                 $_backoffTime = Tea::getBackoffTime($_runtime['backoff'], $_retryTimes);
@@ -132,7 +133,7 @@ class Roa
                     $accessKeyId     = $this->_credential->getAccessKeyId();
                     $accessKeySecret = $this->_credential->getAccessKeySecret();
                     $securityToken   = $this->_credential->getSecurityToken();
-                    if (!Utils::_empty($securityToken)) {
+                    if (!Utils::empty_($securityToken)) {
                         $_request->headers['x-acs-accesskey-id']   = $accessKeyId;
                         $_request->headers['x-acs-security-token'] = $securityToken;
                     }
@@ -162,7 +163,9 @@ class Roa
                     'body'    => $result,
                 ];
             } catch (\Exception $e) {
-                if (Tea::isRetryable($_runtime['retry'], $_retryTimes)) {
+                if (Tea::isRetryable($e)) {
+                    $_lastException = $e;
+
                     continue;
                 }
 
@@ -170,7 +173,7 @@ class Roa
             }
         }
 
-        throw new TeaUnableRetryError($_lastRequest);
+        throw new TeaUnableRetryError($_lastRequest, $_lastException);
     }
 
     /**
@@ -195,7 +198,7 @@ class Roa
      */
     public function checkConfig(Config $config)
     {
-        if (Utils::_empty($this->_endpointRule) && Utils::_empty($config->endpoint)) {
+        if (Utils::empty_($this->_endpointRule) && Utils::empty_($config->endpoint)) {
             throw new TeaError([
                 'name'    => 'ParameterMissing',
                 'message' => "'config.endpoint' can not be empty",
