@@ -2,10 +2,10 @@
 package client
 
 import (
+	roautil "github.com/alibabacloud-go/tea-roa-utils/service"
+	util "github.com/alibabacloud-go/tea-utils/service"
 	"github.com/alibabacloud-go/tea/tea"
 	credential "github.com/aliyun/credentials-go/credentials"
-	roautil "github.com/aliyun/tea-roa-util/golang/service"
-	util "github.com/aliyun/tea-util/golang/service"
 )
 
 type Config struct {
