@@ -17,10 +17,6 @@ namespace AlibabaCloud.ROAClient.Models
         [Validation(Required=false)]
         public string AccessKeySecret { get; set; }
 
-        [NameInMap("type")]
-        [Validation(Required=false)]
-        public string Type { get; set; }
-
         [NameInMap("securityToken")]
         [Validation(Required=false)]
         public string SecurityToken { get; set; }
@@ -49,6 +45,10 @@ namespace AlibabaCloud.ROAClient.Models
         [Validation(Required=false)]
         public string HttpsProxy { get; set; }
 
+        [NameInMap("credential")]
+        [Validation(Required=false)]
+        public Aliyun.Credentials.Client Credential { get; set; }
+
         [NameInMap("endpoint")]
         [Validation(Required=false)]
         public string Endpoint { get; set; }
@@ -68,6 +68,11 @@ namespace AlibabaCloud.ROAClient.Models
         [NameInMap("suffix")]
         [Validation(Required=false)]
         public string Suffix { get; set; }
+
+        [NameInMap("type")]
+        [Validation(Required=false)]
+        [Obsolete]
+        public string Type { get; set; }
 
     }
 
