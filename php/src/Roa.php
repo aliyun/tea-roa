@@ -17,28 +17,49 @@ use AlibabaCloud\Tea\Utils\Utils\RuntimeOptions;
 class Roa
 {
     private $_protocol;
+
     private $_readTimeout;
+
     private $_connectTimeout;
+
     private $_httpProxy;
+
     private $_httpsProxy;
+
     private $_noProxy;
+
     private $_maxIdleConns;
+
     private $_endpointHost;
+
     private $_network;
+
     private $_endpointRule;
+
     private $_endpointMap;
+
     private $_suffix;
+
     private $_productId;
+
     private $_regionId;
+
     private $_credential;
 
     public function __construct(Config $config)
     {
-        $credentialConfig = null;
         if (Utils::isUnset($config)) {
-            $config            = new Config([]);
-            $this->_credential = new Credential(null);
-        } else {
+            throw new TeaError([
+                'code'    => 'ParameterMissing',
+                'message' => "'config' can not be unset",
+            ]);
+        }
+        if (!Utils::empty_($config->accessKeyId) && !Utils::empty_($config->accessKeySecret)) {
+            if (!Utils::empty_($config->securityToken)) {
+                $config->type = 'sts';
+            } else {
+                $config->type = 'access_key';
+            }
             $credentialConfig = new \AlibabaCloud\Credentials\Credential\Config([
                 'accessKeyId'     => $config->accessKeyId,
                 'type'            => $config->type,
@@ -46,6 +67,13 @@ class Roa
                 'securityToken'   => $config->securityToken,
             ]);
             $this->_credential = new Credential($credentialConfig);
+        } elseif (!Utils::isUnset($config->credential)) {
+            $this->_credential = $config->credential;
+        } else {
+            throw new TeaError([
+                'code'    => 'ParameterMissing',
+                'message' => "'accessKeyId' and 'accessKeySecret' or 'credential' can not be unset",
+            ]);
         }
         $this->_network        = $config->network;
         $this->_regionId       = $config->regionId;
@@ -200,7 +228,7 @@ class Roa
     {
         if (Utils::empty_($this->_endpointRule) && Utils::empty_($config->endpoint)) {
             throw new TeaError([
-                'name'    => 'ParameterMissing',
+                'code'    => 'ParameterMissing',
                 'message' => "'config.endpoint' can not be empty",
             ]);
         }
