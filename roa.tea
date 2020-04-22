@@ -21,7 +21,6 @@ type @credential = Credential
 model Config {
   accessKeyId?: string,
   accessKeySecret?: string,
-  type?: string,
   securityToken?: string,
   protocol?: string,
   regionId?: string,
@@ -29,27 +28,44 @@ model Config {
   connectTimeout?: number,
   httpProxy?: string,
   httpsProxy?: string,
+  credential?: Credential,
   endpoint?: string,
   noProxy?: string,
   maxIdleConns?: number,
   network?: string,
-  suffix?: string
+  suffix?: string,
+  type?: string(deprecated=true)
 }
 
 init(config: Config) {
-  var credentialConfig : Credential.Config = null;
   if (Util.isUnset(config)) {
-    config = new Config{};
-    @credential = new Credential(null);
-  } else {
-    credentialConfig = new Credential.Config{
+    throw {
+      code = 'ParameterMissing',
+      message = '\'config\' can not be unset'
+    };
+  }
+
+  if(!Util.empty(config.accessKeyId) && !Util.empty(config.accessKeySecret)){
+    if (!Util.empty(config.securityToken)) {
+      config.type = 'sts';
+    } else {
+      config.type = 'access_key';
+    }
+    var credentialConfig = new Credential.Config{
       accessKeyId = config.accessKeyId,
       type = config.type,
       accessKeySecret = config.accessKeySecret,
       securityToken = config.securityToken
     };
     @credential = new Credential(credentialConfig);
-  } 
+  } else if(!Util.isUnset(config.credential)) {
+    @credential = config.credential;
+  } else {
+    throw {
+      code = 'ParameterMissing',
+      message = '\'accessKeyId\' and \'accessKeySecret\' or \'credential\' can not be unset'
+    };
+  }
   
   @network = config.network;
   @regionId = config.regionId;
@@ -149,7 +165,7 @@ static function defaultAny(inputValue: any, defaultValue: any): any {
 function checkConfig(config: Config)throws : void {
   if (Util.empty(@endpointRule) && Util.empty(config.endpoint)) {
     throw {
-      name = 'ParameterMissing',
+      code = 'ParameterMissing',
       message = '\'config.endpoint\' can not be empty'
     };
   }

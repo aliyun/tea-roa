@@ -9,21 +9,23 @@ import (
 )
 
 type Config struct {
-	AccessKeyId     *string `json:"accessKeyId" xml:"accessKeyId"`
-	AccessKeySecret *string `json:"accessKeySecret" xml:"accessKeySecret"`
-	Type            *string `json:"type" xml:"type"`
-	SecurityToken   *string `json:"securityToken" xml:"securityToken"`
-	Protocol        *string `json:"protocol" xml:"protocol"`
-	RegionId        *string `json:"regionId" xml:"regionId"`
-	ReadTimeout     *int    `json:"readTimeout" xml:"readTimeout"`
-	ConnectTimeout  *int    `json:"connectTimeout" xml:"connectTimeout"`
-	HttpProxy       *string `json:"httpProxy" xml:"httpProxy"`
-	HttpsProxy      *string `json:"httpsProxy" xml:"httpsProxy"`
-	Endpoint        *string `json:"endpoint" xml:"endpoint"`
-	NoProxy         *string `json:"noProxy" xml:"noProxy"`
-	MaxIdleConns    *int    `json:"maxIdleConns" xml:"maxIdleConns"`
-	Network         *string `json:"network" xml:"network"`
-	Suffix          *string `json:"suffix" xml:"suffix"`
+	AccessKeyId     *string               `json:"accessKeyId" xml:"accessKeyId"`
+	AccessKeySecret *string               `json:"accessKeySecret" xml:"accessKeySecret"`
+	SecurityToken   *string               `json:"securityToken" xml:"securityToken"`
+	Protocol        *string               `json:"protocol" xml:"protocol"`
+	RegionId        *string               `json:"regionId" xml:"regionId"`
+	ReadTimeout     *int                  `json:"readTimeout" xml:"readTimeout"`
+	ConnectTimeout  *int                  `json:"connectTimeout" xml:"connectTimeout"`
+	HttpProxy       *string               `json:"httpProxy" xml:"httpProxy"`
+	HttpsProxy      *string               `json:"httpsProxy" xml:"httpsProxy"`
+	Credential      credential.Credential `json:"credential" xml:"credential"`
+	Endpoint        *string               `json:"endpoint" xml:"endpoint"`
+	NoProxy         *string               `json:"noProxy" xml:"noProxy"`
+	MaxIdleConns    *int                  `json:"maxIdleConns" xml:"maxIdleConns"`
+	Network         *string               `json:"network" xml:"network"`
+	Suffix          *string               `json:"suffix" xml:"suffix"`
+	// Deprecated
+	Type *string `json:"type" xml:"type"`
 }
 
 func (s Config) String() string {
@@ -41,11 +43,6 @@ func (s *Config) SetAccessKeyId(v string) *Config {
 
 func (s *Config) SetAccessKeySecret(v string) *Config {
 	s.AccessKeySecret = &v
-	return s
-}
-
-func (s *Config) SetType(v string) *Config {
-	s.Type = &v
 	return s
 }
 
@@ -84,6 +81,11 @@ func (s *Config) SetHttpsProxy(v string) *Config {
 	return s
 }
 
+func (s *Config) SetCredential(v credential.Credential) *Config {
+	s.Credential = v
+	return s
+}
+
 func (s *Config) SetEndpoint(v string) *Config {
 	s.Endpoint = &v
 	return s
@@ -106,6 +108,11 @@ func (s *Config) SetNetwork(v string) *Config {
 
 func (s *Config) SetSuffix(v string) *Config {
 	s.Suffix = &v
+	return s
+}
+
+func (s *Config) SetType(v string) *Config {
+	s.Type = &v
 	return s
 }
 
@@ -134,16 +141,22 @@ func NewClient(config *Config) (*Client, error) {
 }
 
 func (client *Client) Init(config *Config) (_err error) {
-	credentialConfig := &credential.Config{}
 	if tea.BoolValue(util.IsUnset(tea.ToMap(config))) {
-		config = &Config{}
-		client.Credential, _err = credential.NewCredential(nil)
-		if _err != nil {
-			return _err
+		_err = tea.NewSDKError(map[string]interface{}{
+			"code":    "ParameterMissing",
+			"message": "'config' can not be unset",
+		})
+		return _err
+	}
+
+	if !tea.BoolValue(util.Empty(config.AccessKeyId)) && !tea.BoolValue(util.Empty(config.AccessKeySecret)) {
+		if !tea.BoolValue(util.Empty(config.SecurityToken)) {
+			config.Type = tea.String("sts")
+		} else {
+			config.Type = tea.String("access_key")
 		}
 
-	} else {
-		credentialConfig = &credential.Config{
+		credentialConfig := &credential.Config{
 			AccessKeyId:     config.AccessKeyId,
 			Type:            config.Type,
 			AccessKeySecret: config.AccessKeySecret,
@@ -154,6 +167,14 @@ func (client *Client) Init(config *Config) (_err error) {
 			return _err
 		}
 
+	} else if !tea.BoolValue(util.IsUnset(config.Credential)) {
+		client.Credential = config.Credential
+	} else {
+		_err = tea.NewSDKError(map[string]interface{}{
+			"code":    "ParameterMissing",
+			"message": "'accessKeyId' and 'accessKeySecret' or 'credential' can not be unset",
+		})
+		return _err
 	}
 
 	client.Network = config.Network
@@ -306,7 +327,7 @@ func DefaultAny(inputValue interface{}, defaultValue interface{}) (_result inter
 func (client *Client) CheckConfig(config *Config) (_err error) {
 	if tea.BoolValue(util.Empty(client.EndpointRule)) && tea.BoolValue(util.Empty(config.Endpoint)) {
 		_err = tea.NewSDKError(map[string]interface{}{
-			"name":    "ParameterMissing",
+			"code":    "ParameterMissing",
 			"message": "'config.endpoint' can not be empty",
 		})
 		return _err
