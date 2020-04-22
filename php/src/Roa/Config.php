@@ -9,20 +9,41 @@ use AlibabaCloud\Tea\Model;
 class Config extends Model
 {
     public $accessKeyId;
+
     public $accessKeySecret;
-    public $type;
+
     public $securityToken;
+
     public $protocol;
+
     public $regionId;
+
     public $readTimeout;
+
     public $connectTimeout;
+
     public $httpProxy;
+
     public $httpsProxy;
+
+    public $credential;
+
     public $endpoint;
+
     public $noProxy;
+
     public $maxIdleConns;
+
     public $network;
+
     public $suffix;
+
+    /**
+     * @deprecated
+     *
+     * @var string
+     */
+    public $type;
 
     public function validate()
     {
@@ -33,7 +54,6 @@ class Config extends Model
         $res                    = [];
         $res['accessKeyId']     = $this->accessKeyId;
         $res['accessKeySecret'] = $this->accessKeySecret;
-        $res['type']            = $this->type;
         $res['securityToken']   = $this->securityToken;
         $res['protocol']        = $this->protocol;
         $res['regionId']        = $this->regionId;
@@ -41,11 +61,13 @@ class Config extends Model
         $res['connectTimeout']  = $this->connectTimeout;
         $res['httpProxy']       = $this->httpProxy;
         $res['httpsProxy']      = $this->httpsProxy;
+        $res['credential']      = null !== $this->credential ? $this->credential->toMap() : null;
         $res['endpoint']        = $this->endpoint;
         $res['noProxy']         = $this->noProxy;
         $res['maxIdleConns']    = $this->maxIdleConns;
         $res['network']         = $this->network;
         $res['suffix']          = $this->suffix;
+        $res['type']            = $this->type;
 
         return $res;
     }
@@ -63,9 +85,6 @@ class Config extends Model
         }
         if (isset($map['accessKeySecret'])) {
             $model->accessKeySecret = $map['accessKeySecret'];
-        }
-        if (isset($map['type'])) {
-            $model->type = $map['type'];
         }
         if (isset($map['securityToken'])) {
             $model->securityToken = $map['securityToken'];
@@ -88,6 +107,9 @@ class Config extends Model
         if (isset($map['httpsProxy'])) {
             $model->httpsProxy = $map['httpsProxy'];
         }
+        if (isset($map['credential'])) {
+            $model->credential = Credential::fromMap($map['credential']);
+        }
         if (isset($map['endpoint'])) {
             $model->endpoint = $map['endpoint'];
         }
@@ -102,6 +124,9 @@ class Config extends Model
         }
         if (isset($map['suffix'])) {
             $model->suffix = $map['suffix'];
+        }
+        if (isset($map['type'])) {
+            $model->type = $map['type'];
         }
 
         return $model;

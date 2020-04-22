@@ -12,6 +12,7 @@ go.sum
 .idea/
 target/
 *.iml
+*.sh
 .classpath
 .project
 .settings/
