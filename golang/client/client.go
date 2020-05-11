@@ -1,4 +1,7 @@
 // This file is auto-generated, don't edit it. Thanks.
+/**
+ * This is for ROA SDK
+ */
 package client
 
 import (
@@ -8,6 +11,9 @@ import (
 	credential "github.com/aliyun/credentials-go/credentials"
 )
 
+/**
+ * Model for initing client
+ */
 type Config struct {
 	AccessKeyId     *string               `json:"accessKeyId" xml:"accessKeyId"`
 	AccessKeySecret *string               `json:"accessKeySecret" xml:"accessKeySecret"`
@@ -127,13 +133,17 @@ type Client struct {
 	EndpointHost   *string
 	Network        *string
 	EndpointRule   *string
-	EndpointMap    map[string]string
+	EndpointMap    map[string]*string
 	Suffix         *string
 	ProductId      *string
 	RegionId       *string
 	Credential     credential.Credential
 }
 
+/**
+ * Init client with Config
+ * @param config config contains the necessary information to create a client
+ */
 func NewClient(config *Config) (*Client, error) {
 	client := new(Client)
 	err := client.Init(config)
@@ -177,9 +187,7 @@ func (client *Client) Init(config *Config) (_err error) {
 		return _err
 	}
 
-	client.Network = config.Network
 	client.RegionId = config.RegionId
-	client.Suffix = config.Suffix
 	client.Protocol = config.Protocol
 	client.EndpointHost = config.Endpoint
 	client.ReadTimeout = config.ReadTimeout
@@ -190,10 +198,23 @@ func (client *Client) Init(config *Config) (_err error) {
 	return nil
 }
 
-func (client *Client) DoRequest(version *string, protocol *string, method *string, authType *string, pathname *string, query map[string]string, headers map[string]string, body interface{}, runtime *util.RuntimeOptions) (_result map[string]interface{}, _err error) {
+/**
+ * Encapsulate the request and invoke the network
+ * @param version product version
+ * @param protocol http or https
+ * @param method e.g. GET
+ * @param authType when authType is Anonymous, the signature will not be calculate
+ * @param pathname pathname of every api
+ * @param query which contains request params
+ * @param headers request headers
+ * @param body content of request
+ * @param runtime which controls some details of call api, such as retry times
+ * @return the response
+ */
+func (client *Client) DoRequest(version *string, protocol *string, method *string, authType *string, pathname *string, query map[string]*string, headers map[string]*string, body interface{}, runtime *util.RuntimeOptions) (_result map[string]interface{}, _err error) {
 	_err = tea.Validate(runtime)
 	if _err != nil {
-		return nil, _err
+		return _result, _err
 	}
 	_runtime := map[string]interface{}{
 		"timeouted":      "retry",
@@ -215,10 +236,10 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 	}
 
 	_resp := make(map[string]interface{})
-	for _retryTimes := 0; tea.AllowRetry(_runtime["retry"], _retryTimes); _retryTimes++ {
+	for _retryTimes := 0; tea.BoolValue(tea.AllowRetry(_runtime["retry"], tea.Int(_retryTimes))); _retryTimes++ {
 		if _retryTimes > 0 {
-			_backoffTime := tea.GetBackoffTime(_runtime["backoff"], _retryTimes)
-			if _backoffTime > 0 {
+			_backoffTime := tea.GetBackoffTime(_runtime["backoff"], tea.Int(_retryTimes))
+			if tea.IntValue(_backoffTime) > 0 {
 				tea.Sleep(_backoffTime)
 			}
 		}
@@ -228,19 +249,19 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 			request_.Protocol = util.DefaultString(client.Protocol, protocol)
 			request_.Method = method
 			request_.Pathname = pathname
-			request_.Headers = tea.Merge(map[string]string{
-				"date":                    tea.StringValue(util.GetDateUTCString()),
-				"host":                    tea.StringValue(client.EndpointHost),
-				"accept":                  "application/json",
-				"x-acs-signature-nonce":   tea.StringValue(util.GetNonce()),
-				"x-acs-signature-method":  "HMAC-SHA1",
-				"x-acs-signature-version": "1.0",
-				"x-acs-version":           tea.StringValue(version),
+			request_.Headers = tea.Merge(map[string]*string{
+				"date":                    util.GetDateUTCString(),
+				"host":                    client.EndpointHost,
+				"accept":                  tea.String("application/json"),
+				"x-acs-signature-nonce":   util.GetNonce(),
+				"x-acs-signature-method":  tea.String("HMAC-SHA1"),
+				"x-acs-signature-version": tea.String("1.0"),
+				"x-acs-version":           version,
 				// user-agent': helper.DEFAULT_UA,
 				// x-sdk-client': helper.DEFAULT_CLIENT
 			}, headers)
 			if !tea.BoolValue(util.IsUnset(body)) {
-				request_.Body = tea.ToReader(tea.StringValue(util.ToJSONString(body)))
+				request_.Body = tea.ToReader(util.ToJSONString(body))
 			}
 
 			if !tea.BoolValue(util.IsUnset(query)) {
@@ -250,35 +271,35 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 			if !tea.BoolValue(util.EqualString(authType, tea.String("Anonymous"))) {
 				accessKeyId, _err := client.Credential.GetAccessKeyId()
 				if _err != nil {
-					return nil, _err
+					return _result, _err
 				}
 
 				accessKeySecret, _err := client.Credential.GetAccessKeySecret()
 				if _err != nil {
-					return nil, _err
+					return _result, _err
 				}
 
 				securityToken, _err := client.Credential.GetSecurityToken()
 				if _err != nil {
-					return nil, _err
+					return _result, _err
 				}
 
 				if !tea.BoolValue(util.Empty(securityToken)) {
-					request_.Headers["x-acs-accesskey-id"] = tea.StringValue(accessKeyId)
-					request_.Headers["x-acs-security-token"] = tea.StringValue(securityToken)
+					request_.Headers["x-acs-accesskey-id"] = accessKeyId
+					request_.Headers["x-acs-security-token"] = securityToken
 				}
 
 				stringToSign := roautil.GetStringToSign(request_)
-				request_.Headers["authorization"] = "acs " + tea.ToString(tea.StringValue(accessKeyId)) + ":" + tea.ToString(tea.StringValue(roautil.GetSignature(stringToSign, accessKeySecret)))
+				request_.Headers["authorization"] = tea.String("acs " + tea.StringValue(accessKeyId) + ":" + tea.StringValue(roautil.GetSignature(stringToSign, accessKeySecret)))
 			}
 
 			response_, _err := tea.DoRequest(request_, _runtime)
 			if _err != nil {
-				return nil, _err
+				return _result, _err
 			}
 			if tea.BoolValue(util.EqualNumber(response_.StatusCode, tea.Int(204))) {
 				_result = make(map[string]interface{})
-				_err = tea.Convert(map[string]map[string]string{
+				_err = tea.Convert(map[string]map[string]*string{
 					"headers": response_.Headers,
 				}, &_result)
 				return _result, _err
@@ -286,7 +307,7 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 
 			result, _err := util.ReadAsJSON(response_.Body)
 			if _err != nil {
-				return nil, _err
+				return _result, _err
 			}
 
 			if tea.BoolValue(util.Is4xx(response_.StatusCode)) || tea.BoolValue(util.Is5xx(response_.StatusCode)) {
@@ -296,7 +317,7 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " requestid: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
 					"data":    err,
 				})
-				return nil, _err
+				return _result, _err
 			}
 
 			_result = make(map[string]interface{})
@@ -306,7 +327,7 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 			}, &_result)
 			return _result, _err
 		}()
-		if !tea.Retryable(_err) {
+		if !tea.BoolValue(tea.Retryable(_err)) {
 			break
 		}
 	}
@@ -314,6 +335,12 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 	return _resp, _err
 }
 
+/**
+ * If inputValue is not null, return it or return defaultValue
+ * @param inputValue  users input value
+ * @param defaultValue default value
+ * @return the final result
+ */
 func DefaultAny(inputValue interface{}, defaultValue interface{}) (_result interface{}) {
 	if tea.BoolValue(util.IsUnset(inputValue)) {
 		_result = defaultValue
@@ -324,6 +351,10 @@ func DefaultAny(inputValue interface{}, defaultValue interface{}) (_result inter
 	return _result
 }
 
+/**
+ * If the endpointRule and config.endpoint are empty, throw error
+ * @param config config contains the necessary information to create a client
+ */
 func (client *Client) CheckConfig(config *Config) (_err error) {
 	if tea.BoolValue(util.Empty(client.EndpointRule)) && tea.BoolValue(util.Empty(config.Endpoint)) {
 		_err = tea.NewSDKError(map[string]interface{}{
