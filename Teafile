@@ -35,5 +35,9 @@
       "desc": "Alibaba Cloud ROA Client",
       "github": "https://github.com/aliyun/tea-roa"
     }
+  },
+  "python": {
+    "package": "alibabacloud_tea_roa",
+    "clientName": "client"
   }
 }
