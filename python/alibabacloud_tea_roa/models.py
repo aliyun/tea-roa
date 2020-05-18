@@ -1,15 +1,13 @@
 # This file is auto-generated, don't edit it. Thanks.
 from Tea.model import TeaModel as Tea_model_TeaModel
 
+
+
 """
 Model for initing client
 """
-
-
 class Config(Tea_model_TeaModel):
-    def __init__(self, access_key_id="", access_key_secret="", security_token="", protocol="", region_id="",
-                 read_timeout=0, connect_timeout=0, http_proxy="", https_proxy="", credential=None, endpoint="",
-                 no_proxy="", max_idle_conns=0, network="", suffix="", type=""):
+    def __init__(self, access_key_id="", access_key_secret="", security_token="", protocol="", region_id="", read_timeout=0, connect_timeout=0, http_proxy="", https_proxy="", credential=None, endpoint="", no_proxy="", max_idle_conns=0, network="", suffix="", type=""):
         self.access_key_id = access_key_id
         self.access_key_secret = access_key_secret
         self.security_token = security_token
@@ -69,3 +67,4 @@ class Config(Tea_model_TeaModel):
         self.suffix = map.get('suffix')
         self.type = map.get('type')
         return self
+

@@ -16,12 +16,8 @@ from Tea.exceptions import UnretryableException as Tea_exceptions_UnretryableExc
 """
 This is for ROA SDK
 """
-
-
 class Client:
-    def __init__(self, config, _protocol="", _read_timeout=0, _connect_timeout=0, _http_proxy="", _https_proxy="",
-                 _no_proxy="", _max_idle_conns=0, _endpoint_host="", _network="", _endpoint_rule="", _endpoint_map=None,
-                 _suffix="", _product_id="", _region_id="", _credential=None):
+    def __init__(self, config, _protocol="", _read_timeout=0, _connect_timeout=0, _http_proxy="", _https_proxy="", _no_proxy="", _max_idle_conns=0, _endpoint_host="", _network="", _endpoint_rule="", _endpoint_map=None, _suffix="", _product_id="", _region_id="", _credential=None):
         """
         Init client with Config
         @param config: config contains the necessary information to create a client
@@ -46,8 +42,7 @@ class Client:
                 "code": "ParameterMissing",
                 "message": "'config' can not be unset"
             })
-        if not alibabacloud_tea_util_client_Client.empty(
-                config.access_key_id) and not alibabacloud_tea_util_client_Client.empty(config.access_key_secret):
+        if not alibabacloud_tea_util_client_Client.empty(config.access_key_id) and not alibabacloud_tea_util_client_Client.empty(config.access_key_secret):
             if not alibabacloud_tea_util_client_Client.empty(config.security_token):
                 config.type = "sts"
             else:
@@ -93,13 +88,11 @@ class Client:
         _runtime = {
             "timeouted": "retry",
             "readTimeout": alibabacloud_tea_util_client_Client.default_number(runtime.read_timeout, self._read_timeout),
-            "connectTimeout": alibabacloud_tea_util_client_Client.default_number(runtime.connect_timeout,
-                                                                                 self._connect_timeout),
+            "connectTimeout": alibabacloud_tea_util_client_Client.default_number(runtime.connect_timeout, self._connect_timeout),
             "httpProxy": alibabacloud_tea_util_client_Client.default_string(runtime.http_proxy, self._http_proxy),
             "httpsProxy": alibabacloud_tea_util_client_Client.default_string(runtime.https_proxy, self._https_proxy),
             "noProxy": alibabacloud_tea_util_client_Client.default_string(runtime.no_proxy, self._no_proxy),
-            "maxIdleConns": alibabacloud_tea_util_client_Client.default_number(runtime.max_idle_conns,
-                                                                               self._max_idle_conns),
+            "maxIdleConns": alibabacloud_tea_util_client_Client.default_number(runtime.max_idle_conns, self._max_idle_conns),
             "retry": {
                 "retryable": runtime.autoretry,
                 "maxAttempts": alibabacloud_tea_util_client_Client.default_number(runtime.max_attempts, 3)
@@ -148,9 +141,7 @@ class Client:
                         _request.headers["x-acs-accesskey-id"] = access_key_id
                         _request.headers["x-acs-security-token"] = security_token
                     string_to_sign = alibabacloud_roa_util_client_Client.get_string_to_sign(_request)
-                    _request.headers["authorization"] = "acs " + access_key_id + ":" + \
-                                                        alibabacloud_roa_util_client_Client.get_signature(
-                                                            string_to_sign, access_key_secret) + ""
+                    _request.headers["authorization"] = "acs " + access_key_id + ":" + alibabacloud_roa_util_client_Client.get_signature(string_to_sign, access_key_secret) + ""
                 _last_request = _request
                 _response = Tea_core_TeaCore.do_action(_request, _runtime)
                 if alibabacloud_tea_util_client_Client.equal_number(_response.status_code, 204):
@@ -158,13 +149,11 @@ class Client:
                         "headers": _response.headers
                     }
                 result = alibabacloud_tea_util_client_Client.read_as_json(_response.body)
-                if alibabacloud_tea_util_client_Client.is_4xx(
-                        _response.status_code) or alibabacloud_tea_util_client_Client.is_5xx(_response.status_code):
+                if alibabacloud_tea_util_client_Client.is_4xx(_response.status_code) or alibabacloud_tea_util_client_Client.is_5xx(_response.status_code):
                     err = alibabacloud_tea_util_client_Client.assert_as_map(result)
                     raise Tea_exceptions_TeaException({
                         "code": "" + self.default_any(err["Code"], err["code"]) + "Error",
-                        "message": "code: " + _response.status_code + ", " + self.default_any(err["Message"], err[
-                            "message"]) + " requestid: " + self.default_any(err["RequestId"], err["requestId"]) + "",
+                        "message": "code: " + _response.status_code + ", " + self.default_any(err["Message"], err["message"]) + " requestid: " + self.default_any(err["RequestId"], err["requestId"]) + "",
                         "data": err
                     })
                 return {
@@ -182,7 +171,7 @@ class Client:
     def default_any(input_value, default_value):
         """
         If inputValue is not null, return it or return defaultValue
-        @param input_value: users input value
+        @param input_value:  users input value
         @param default_value: default value
         @return the final result
         """
@@ -195,8 +184,7 @@ class Client:
         If the endpointRule and config.endpoint are empty, throw error
         @param config: config contains the necessary information to create a client
         """
-        if alibabacloud_tea_util_client_Client.empty(self._endpoint_rule) and alibabacloud_tea_util_client_Client.empty(
-                config.endpoint):
+        if alibabacloud_tea_util_client_Client.empty(self._endpoint_rule) and alibabacloud_tea_util_client_Client.empty(config.endpoint):
             raise Tea_exceptions_TeaException({
                 "code": "ParameterMissing",
                 "message": "'config.endpoint' can not be empty"
