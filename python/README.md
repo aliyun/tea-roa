@@ -14,13 +14,13 @@ pip install alibabacloud_tea_roa
 ```
 
 ## Issues
-[Opening an Issue](https://github.com/aliyun/tea-python/issues/new), Issues not conforming to the guidelines may be closed immediately.
+[Opening an Issue](https://github.com/aliyun/tea-roa/issues/new), Issues not conforming to the guidelines may be closed immediately.
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](./ChangeLog.md).
 
 ## References
-* [Latest Release](https://github.com/aliyun/tea-python/tree/master/python)
+* [Latest Release](https://github.com/aliyun/tea-roa/tree/master/python)
 
 ## License
 [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
