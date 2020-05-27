@@ -47,10 +47,9 @@ setup_args = {
     'packages': find_packages(exclude=["tests*"]),
     'platforms': 'any',
     'install_requires': [
-        'alibabacloud-tea>=0.0.3', 'alibabacloud_sdk_oss>=0.0.1',
-        'alibabacloud_tea_util>=0.0.2', 'alibabacloud_credentials>=0.0.1',
-        'alibabacloud_oss_util>=0.0.1', 'alibabacloud_tea_xml>=0.0.1',
-        'alibabacloud_tea_fileform>=0.0.1'
+        'alibabacloud_oss_sdk>=0.0.1', 'alibabacloud_tea_util>=0.0.2',
+        'alibabacloud_credentials>=0.0.1', 'alibabacloud_oss_util>=0.0.1',
+        'alibabacloud_tea_xml>=0.0.1', 'alibabacloud_tea_fileform>=0.0.1'
     ],
     'classifiers': (
         'Development Status :: 5 - Production/Stable',
