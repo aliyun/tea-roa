@@ -17,13 +17,13 @@ pip install alibabacloud_tea_roa
 ```
 
 ## 问题
-[提交 Issue](https://github.com/aliyun/tea-python/issues/new)，不符合指南的问题可能会立即关闭。
+[提交 Issue](https://github.com/aliyun/tea-roa/issues/new)，不符合指南的问题可能会立即关闭。
 
 ## 发行说明
 每个版本的详细更改记录在[发行说明](./ChangeLog.md)中。
 
 ## 相关
-* [最新源码](https://github.com/aliyun/tea-python/tree/master/python)
+* [最新源码](https://github.com/aliyun/tea-roa/tree/master/python)
 
 ## 许可证
 [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)

@@ -25,7 +25,7 @@ Created on 3/24/2020
 """
 
 PACKAGE = "alibabacloud_tea_roa"
-DESCRIPTION = "The tea-roa module of alibabaCloud Python SDK."
+DESCRIPTION = "The Tea ROA module of alibabaCloud Python SDK."
 AUTHOR = "Alibaba Cloud"
 AUTHOR_EMAIL = "alibaba-cloud-sdk-dev-team@list.alibaba-inc.com"
 URL = "https://github.com/aliyun/tea-roa/tree/master/python"
@@ -46,7 +46,12 @@ setup_args = {
     'keywords': ["alibabacloud", "sdk", "tea"],
     'packages': find_packages(exclude=["tests*"]),
     'platforms': 'any',
-    'install_requires': [],
+    'install_requires': [
+        'alibabacloud-tea>=0.0.3', 'alibabacloud_sdk_oss>=0.0.1',
+        'alibabacloud_tea_util>=0.0.2', 'alibabacloud_credentials>=0.0.1',
+        'alibabacloud_oss_util>=0.0.1', 'alibabacloud_tea_xml>=0.0.1',
+        'alibabacloud_tea_fileform>=0.0.1'
+    ],
     'classifiers': (
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
