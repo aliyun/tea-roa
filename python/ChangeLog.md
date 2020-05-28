@@ -1,3 +1,6 @@
+### 2020-05-28 Version 0.0.6
+* fixed install requires
+
 ### 2020-05-27 Version 0.0.5
 * fixed check config
 
