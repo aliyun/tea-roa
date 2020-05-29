@@ -19,9 +19,7 @@ This is for ROA SDK
 
 
 class Client:
-    def __init__(self, config, _protocol="", _read_timeout=0, _connect_timeout=0, _http_proxy="", _https_proxy="",
-                 _no_proxy="", _max_idle_conns=0, _endpoint_host="", _network="", _endpoint_rule="", _endpoint_map=None,
-                 _suffix="", _product_id="", _region_id="", _credential=None):
+    def __init__(self, config, _protocol=None, _read_timeout=None, _connect_timeout=None, _http_proxy=None, _https_proxy=None, _no_proxy=None, _max_idle_conns=None, _endpoint_host=None, _network=None, _endpoint_rule=None, _endpoint_map=None, _suffix=None, _product_id=None, _region_id=None, _credential=None):
         """
         Init client with Config
         @param config: config contains the necessary information to create a client
@@ -111,9 +109,9 @@ class Client:
         _last_exception = None
         _now = time.time()
         _retry_times = 0
-        while TeaCore.allow_retry(_runtime["retry"], _retry_times, _now):
+        while TeaCore.allow_retry(_runtime.get('retry'), _retry_times, _now):
             if _retry_times > 0:
-                _backoff_time = TeaCore.get_backoff_time(_runtime["backoff"], _retry_times)
+                _backoff_time = TeaCore.get_backoff_time(_runtime.get('backoff'), _retry_times)
                 if _backoff_time > 0:
                     TeaCore.sleep(_backoff_time)
             _retry_times = _retry_times + 1
@@ -145,8 +143,7 @@ class Client:
                         _request.headers["x-acs-accesskey-id"] = access_key_id
                         _request.headers["x-acs-security-token"] = security_token
                     string_to_sign = ROAUtilClient.get_string_to_sign(_request)
-                    _request.headers["authorization"] = "acs " + access_key_id + ":" + ROAUtilClient.get_signature(
-                        string_to_sign, access_key_secret) + ""
+                    _request.headers["authorization"] = "acs " + access_key_id + ":" + ROAUtilClient.get_signature(string_to_sign, access_key_secret) + ""
                 _last_request = _request
                 _response = TeaCore.do_action(_request, _runtime)
                 if UtilClient.equal_number(_response.status_code, 204):
@@ -157,9 +154,8 @@ class Client:
                 if UtilClient.is_4xx(_response.status_code) or UtilClient.is_5xx(_response.status_code):
                     err = UtilClient.assert_as_map(result)
                     raise TeaException({
-                        "code": "" + self.default_any(err["Code"], err["code"]) + "Error",
-                        "message": "code: " + _response.status_code + ", " + self.default_any(err["Message"], err[
-                            "message"]) + " requestid: " + self.default_any(err["RequestId"], err["requestId"]) + "",
+                        "code": "" + self.default_any(err.get('Code'), err.get('code')) + "Error",
+                        "message": "code: " + _response.status_code + ", " + self.default_any(err.get('Message'), err.get('message')) + " requestid: " + self.default_any(err.get('RequestId'), err.get('requestId')) + "",
                         "data": err
                     })
                 return {

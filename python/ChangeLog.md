@@ -1,3 +1,6 @@
+### 2020-05-29 Version 0.0.7
+* Fixed dict get item
+
 ### 2020-05-28 Version 0.0.6
 * fixed install requires
 
