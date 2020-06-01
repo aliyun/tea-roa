@@ -7,7 +7,7 @@ Model for initing client
 
 
 class Config(TeaModel):
-    def __init__(self, access_key_id="", access_key_secret="", security_token="", protocol="", region_id="", read_timeout=0, connect_timeout=0, http_proxy="", https_proxy="", credential=None, endpoint="", no_proxy="", max_idle_conns=0, network="", suffix="", type=""):
+    def __init__(self, access_key_id=None, access_key_secret=None, security_token=None, protocol=None, region_id=None, read_timeout=None, connect_timeout=None, http_proxy=None, https_proxy=None, credential=None, endpoint=None, no_proxy=None, max_idle_conns=None, network=None, suffix=None, type=None):
         self.access_key_id = access_key_id
         self.access_key_secret = access_key_secret
         self.security_token = security_token
