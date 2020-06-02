@@ -1,3 +1,6 @@
+### 2020-06-02 Version 0.0.8
+* Fixed type error when concatenating strings
+
 ### 2020-05-29 Version 0.0.7
 * Fixed dict get item
 
