@@ -143,7 +143,7 @@ class Client:
                         _request.headers["x-acs-accesskey-id"] = access_key_id
                         _request.headers["x-acs-security-token"] = security_token
                     string_to_sign = ROAUtilClient.get_string_to_sign(_request)
-                    _request.headers["authorization"] = "acs " + access_key_id + ":" + ROAUtilClient.get_signature(string_to_sign, access_key_secret) + ""
+                    _request.headers["authorization"] = "acs " + str(access_key_id) + ":" + str(ROAUtilClient.get_signature(string_to_sign, access_key_secret)) + ""
                 _last_request = _request
                 _response = TeaCore.do_action(_request, _runtime)
                 if UtilClient.equal_number(_response.status_code, 204):
@@ -154,8 +154,8 @@ class Client:
                 if UtilClient.is_4xx(_response.status_code) or UtilClient.is_5xx(_response.status_code):
                     err = UtilClient.assert_as_map(result)
                     raise TeaException({
-                        "code": "" + self.default_any(err.get('Code'), err.get('code')) + "Error",
-                        "message": "code: " + _response.status_code + ", " + self.default_any(err.get('Message'), err.get('message')) + " requestid: " + self.default_any(err.get('RequestId'), err.get('requestId')) + "",
+                        "code": "" + str(self.default_any(err.get('Code'), err.get('code'))) + "Error",
+                        "message": "code: " + str(_response.status_code) + ", " + str(self.default_any(err.get('Message'), err.get('message'))) + " requestid: " + str(self.default_any(err.get('RequestId'), err.get('requestId'))) + "",
                         "data": err
                     })
                 return {
