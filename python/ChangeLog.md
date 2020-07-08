@@ -1,3 +1,7 @@
+### 2020-07-08 Version 0.0.9
+
+* Add validate for endpoint
+
 ### 2020-06-02 Version 0.0.8
 * Fixed type error when concatenating strings
 
