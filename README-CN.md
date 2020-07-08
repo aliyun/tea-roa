@@ -10,6 +10,7 @@
 - [ROA Client for PHP](./php/README-CN.md)
 - [ROA Client for TypeScript/Node.js](./ts/README-CN.md)
 - [ROA Client for Python](./python/README-CN.md)
+- [ROA Client for .NET](./csharp/README-CN.md)
 
 ## 问题
 

@@ -2,12 +2,12 @@
 
 ![](https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg)
 
-## Alibaba Cloud ROA Client for .Net
+## Alibaba Cloud ROA Client for .NET
 
 
 ## 安装
 
-Use .Net CLI ( Recommand )
+Use .NET CLI ( Recommand )
 
     dotnet add package AlibabaCloud.ROAClient
 
