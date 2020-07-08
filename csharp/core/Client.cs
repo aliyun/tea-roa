@@ -31,8 +31,13 @@ namespace AlibabaCloud.ROAClient
         protected string _regionId;
         protected Aliyun.Credentials.Client _credential;
 
+        /**
+         * Init client with Config
+         * @param config config contains the necessary information to create a client
+         */
         public Client(Config config)
         {
+            AlibabaCloud.TeaUtil.Common.ValidateModel(config);
             if (AlibabaCloud.TeaUtil.Common.IsUnset(config.ToMap()))
             {
                 throw new TeaException(new Dictionary<string, string>
@@ -72,9 +77,7 @@ namespace AlibabaCloud.ROAClient
                     {"message", "'accessKeyId' and 'accessKeySecret' or 'credential' can not be unset"},
                 });
             }
-            this._network = config.Network;
             this._regionId = config.RegionId;
-            this._suffix = config.Suffix;
             this._protocol = config.Protocol;
             this._endpointHost = config.Endpoint;
             this._readTimeout = config.ReadTimeout;
@@ -84,6 +87,19 @@ namespace AlibabaCloud.ROAClient
             this._maxIdleConns = config.MaxIdleConns;
         }
 
+        /**
+         * Encapsulate the request and invoke the network
+         * @param version product version
+         * @param protocol http or https
+         * @param method e.g. GET
+         * @param authType when authType is Anonymous, the signature will not be calculate
+         * @param pathname pathname of every api
+         * @param query which contains request params
+         * @param headers request headers
+         * @param body content of request
+         * @param runtime which controls some details of call api, such as retry times
+         * @return the response
+         */
         public Dictionary<string, object> DoRequest(string version, string protocol, string method, string authType, string pathname, Dictionary<string, string> query, Dictionary<string, string> headers, object body, AlibabaCloud.TeaUtil.Models.RuntimeOptions runtime)
         {
             Dictionary<string, object> runtime_ = new Dictionary<string, object>
@@ -205,6 +221,19 @@ namespace AlibabaCloud.ROAClient
             throw new TeaUnretryableException(_lastRequest, _lastException);
         }
 
+        /**
+         * Encapsulate the request and invoke the network
+         * @param version product version
+         * @param protocol http or https
+         * @param method e.g. GET
+         * @param authType when authType is Anonymous, the signature will not be calculate
+         * @param pathname pathname of every api
+         * @param query which contains request params
+         * @param headers request headers
+         * @param body content of request
+         * @param runtime which controls some details of call api, such as retry times
+         * @return the response
+         */
         public async Task<Dictionary<string, object>> DoRequestAsync(string version, string protocol, string method, string authType, string pathname, Dictionary<string, string> query, Dictionary<string, string> headers, object body, AlibabaCloud.TeaUtil.Models.RuntimeOptions runtime)
         {
             Dictionary<string, object> runtime_ = new Dictionary<string, object>
@@ -326,6 +355,12 @@ namespace AlibabaCloud.ROAClient
             throw new TeaUnretryableException(_lastRequest, _lastException);
         }
 
+        /**
+         * If inputValue is not null, return it or return defaultValue
+         * @param inputValue  users input value
+         * @param defaultValue default value
+         * @return the final result
+         */
         public static object DefaultAny(object inputValue, object defaultValue)
         {
             if (AlibabaCloud.TeaUtil.Common.IsUnset(inputValue))
@@ -335,6 +370,10 @@ namespace AlibabaCloud.ROAClient
             return inputValue;
         }
 
+        /**
+         * If the endpointRule and config.endpoint are empty, throw error
+         * @param config config contains the necessary information to create a client
+         */
         public void CheckConfig(Config config)
         {
             if (AlibabaCloud.TeaUtil.Common.Empty(_endpointRule) && AlibabaCloud.TeaUtil.Common.Empty(config.Endpoint))
