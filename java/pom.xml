@@ -4,7 +4,7 @@
 
     <groupId>com.aliyun</groupId>
     <artifactId>tea-roa</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
     <name>tea-roa</name>
     <description>Aliyun Tea ROA for Java
