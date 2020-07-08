@@ -21,7 +21,12 @@ public class Client {
     public String _productId;
     public String _regionId;
     public com.aliyun.credentials.Client _credential;
+    /**
+     * Init client with Config
+     * @param config config contains the necessary information to create a client
+     */
     public Client(Config config) throws Exception {
+        com.aliyun.teautil.Common.validateModel(config);
         if (com.aliyun.teautil.Common.isUnset(TeaModel.buildMap(config))) {
             throw new TeaException(TeaConverter.buildMap(
                 new TeaPair("code", "ParameterMissing"),
@@ -52,9 +57,7 @@ public class Client {
             ));
         }
 
-        this._network = config.network;
         this._regionId = config.regionId;
-        this._suffix = config.suffix;
         this._protocol = config.protocol;
         this._endpointHost = config.endpoint;
         this._readTimeout = config.readTimeout;
@@ -64,7 +67,7 @@ public class Client {
         this._maxIdleConns = config.maxIdleConns;
     }
 
-    public java.util.Map<String, Object> doRequest(String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, Object body, com.aliyun.teautil.models.RuntimeOptions runtime) throws Exception {
+    public java.util.Map<String, ?> doRequest(String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, Object body, com.aliyun.teautil.models.RuntimeOptions runtime) throws Exception {
         java.util.Map<String, Object> runtime_ = TeaConverter.buildMap(
             new TeaPair("timeouted", "retry"),
             new TeaPair("readTimeout", com.aliyun.teautil.Common.defaultNumber(runtime.readTimeout, _readTimeout)),
@@ -167,6 +170,12 @@ public class Client {
         throw new TeaUnretryableException(_lastRequest);
     }
 
+    /**
+     * If inputValue is not null, return it or return defaultValue
+     * @param inputValue  users input value
+     * @param defaultValue default value
+     * @return the final result
+     */
     public static Object defaultAny(Object inputValue, Object defaultValue) throws Exception {
         if (com.aliyun.teautil.Common.isUnset(inputValue)) {
             return defaultValue;
@@ -175,6 +184,10 @@ public class Client {
         return inputValue;
     }
 
+    /**
+     * If the endpointRule and config.endpoint are empty, throw error
+     * @param config config contains the necessary information to create a client
+     */
     public void checkConfig(Config config) throws Exception {
         if (com.aliyun.teautil.Common.empty(_endpointRule) && com.aliyun.teautil.Common.empty(config.endpoint)) {
             throw new TeaException(TeaConverter.buildMap(

@@ -3,6 +3,9 @@ package com.aliyun.tearoa.models;
 
 import com.aliyun.tea.*;
 
+/**
+ * Model for initing client
+ */
 public class Config extends TeaModel {
     @NameInMap("accessKeyId")
     public String accessKeyId;
@@ -17,6 +20,7 @@ public class Config extends TeaModel {
     public String protocol;
 
     @NameInMap("regionId")
+    @Validation(pattern = "^[a-zA-Z0-9_-]+$")
     public String regionId;
 
     @NameInMap("readTimeout")
@@ -44,9 +48,11 @@ public class Config extends TeaModel {
     public Integer maxIdleConns;
 
     @NameInMap("network")
+    @Validation(pattern = "^[a-zA-Z0-9_-]+$")
     public String network;
 
     @NameInMap("suffix")
+    @Validation(pattern = "^[a-zA-Z0-9_-]+$")
     public String suffix;
 
     @NameInMap("type")
