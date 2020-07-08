@@ -39,6 +39,7 @@ class Client:
         self._product_id = _product_id
         self._region_id = _region_id
         self._credential = _credential
+        UtilClient.validate_model(config)
         if UtilClient.is_unset(config.to_map()):
             raise TeaException({
                 "code": "ParameterMissing",
