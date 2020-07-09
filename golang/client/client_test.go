@@ -70,7 +70,8 @@ func Test_DoRequest(t *testing.T) {
 		SetMaxIdleConns(1).
 		SetNetwork("public").
 		SetSuffix("ali").
-		SetType("access_key")
+		SetType("access_key").
+		SetUserAgent("rpc")
 
 	config.SetHttpProxy("").
 		SetHttpsProxy("")

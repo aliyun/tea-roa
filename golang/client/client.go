@@ -27,6 +27,7 @@ type Config struct {
 	Credential      credential.Credential `json:"credential,omitempty" xml:"credential,omitempty"`
 	Endpoint        *string               `json:"endpoint,omitempty" xml:"endpoint,omitempty"`
 	NoProxy         *string               `json:"noProxy,omitempty" xml:"noProxy,omitempty"`
+	UserAgent       *string               `json:"userAgent,omitempty" xml:"userAgent,omitempty"`
 	MaxIdleConns    *int                  `json:"maxIdleConns,omitempty" xml:"maxIdleConns,omitempty"`
 	Network         *string               `json:"network,omitempty" xml:"network,omitempty" pattern:"^[a-zA-Z0-9_-]+$"`
 	Suffix          *string               `json:"suffix,omitempty" xml:"suffix,omitempty" pattern:"^[a-zA-Z0-9_-]+$"`
@@ -102,6 +103,11 @@ func (s *Config) SetNoProxy(v string) *Config {
 	return s
 }
 
+func (s *Config) SetUserAgent(v string) *Config {
+	s.UserAgent = &v
+	return s
+}
+
 func (s *Config) SetMaxIdleConns(v int) *Config {
 	s.MaxIdleConns = &v
 	return s
@@ -137,6 +143,7 @@ type Client struct {
 	Suffix         *string
 	ProductId      *string
 	RegionId       *string
+	UserAgent      *string
 	Credential     credential.Credential
 }
 
@@ -261,7 +268,7 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 				"x-acs-signature-method":  tea.String("HMAC-SHA1"),
 				"x-acs-signature-version": tea.String("1.0"),
 				"x-acs-version":           version,
-				// user-agent': helper.DEFAULT_UA,
+				"user-agent":              util.GetUserAgent(client.UserAgent),
 				// x-sdk-client': helper.DEFAULT_CLIENT
 			}, headers)
 			if !tea.BoolValue(util.IsUnset(body)) {
