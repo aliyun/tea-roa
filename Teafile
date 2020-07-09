@@ -1,7 +1,7 @@
 {
   "scope": "alibabacloud",
   "name": "ROA",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "main": "./roa.tea",
   "maintainers": [
     {
@@ -16,7 +16,7 @@
   },
   "releases": {
     "ts": "@alicloud/roa-client:^0.0.1",
-    "go": "github.com/alibabacloud-go/tea-roa/client:v1.1.1",
+    "go": "github.com/alibabacloud-go/tea-roa/client:v1.1.2",
     "csharp": "AlibabaCloud.ROAClient:0.0.4",
     "java": "com.aliyun:tea-roa:0.0.4",
     "php": "alibabacloud/tea-roa:^0.1.0",
