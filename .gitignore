@@ -4,6 +4,8 @@ ts/node_modules
 ts/dist
 go.sum
 .DS_Store
+coverage.out
+coverage.html
 
 **/csharp/**/bin/
 **/csharp/**/obj/
@@ -12,7 +14,6 @@ go.sum
 .idea/
 target/
 *.iml
-*.sh
 .classpath
 .project
 .settings/
