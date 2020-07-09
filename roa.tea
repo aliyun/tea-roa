@@ -20,6 +20,7 @@ type @endpointMap = map[string]string
 type @suffix = string
 type @productId = string
 type @regionId = string
+type @userAgent = string
 type @credential = Credential
 
 /**
@@ -38,6 +39,7 @@ model Config {
   credential?: Credential(description='credential',example='',default=''),
   endpoint?: string(description='endpoint',example='cs.aliyuncs.com',default=''),
   noProxy?: string(description='proxy white list',example='http://localhost',default=''),
+  userAgent?: string(description='user agent',example='Alibabacloud/1',default=''),
   maxIdleConns?: number(description='max idle conns',example='3',default=''),
   network?: string(description='network for endpoint',example='public',default='',pattern='^[a-zA-Z0-9_-]+$'),
   suffix?: string(description='suffix for endpoint',example='aliyun',default='',pattern='^[a-zA-Z0-9_-]+$'),
@@ -116,7 +118,7 @@ api doRequest(version: string, protocol: string, method: string, authType: strin
     x-acs-signature-method = 'HMAC-SHA1',
     x-acs-signature-version = '1.0',
     x-acs-version = version,
-    // user-agent': helper.DEFAULT_UA,
+    user-agent = Util.getUserAgent(@userAgent),
     // x-sdk-client': helper.DEFAULT_CLIENT
     ...headers
   };
