@@ -71,9 +71,9 @@ function run_python {
   # install
   cd python || return 126
   pip install coverage
-  pip install alibabacloud-tea
+  pip install -r ./tests/test_requirements.txt
 
-  coverage run --source="./alibabacloud_tea_rpc" ./tests/run_test.py
+  coverage run --source="./alibabacloud_tea_roa" ./tests/run_test.py
 
   cd ../
   upload_codecov_report python python
