@@ -125,6 +125,7 @@ api doRequest(version: string, protocol: string, method: string, authType: strin
 
   if (!Util.isUnset(body)) {
     __request.body = Util.toJSONString(body);
+    __request.headers.content-type = 'application/json; charset=UTF-8;';
   }
 
   if (!Util.isUnset(query)) {
