@@ -89,8 +89,20 @@ func Test_DoRequest(t *testing.T) {
 	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
 	utils.AssertNil(t, resp)
 
+	resp, err = client.DoRequestWithForm(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
+		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
+	utils.AssertNotNil(t, err)
+	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
+	utils.AssertNil(t, resp)
+
 	runtime.SetMaxAttempts(3).SetAutoretry(true).SetBackoffPeriod(1).SetBackoffPolicy("ok")
 	resp, err = client.DoRequest(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
+		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
+	utils.AssertNotNil(t, err)
+	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
+	utils.AssertNil(t, resp)
+
+	resp, err = client.DoRequestWithForm(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
 		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
 	utils.AssertNotNil(t, err)
 	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
@@ -103,9 +115,20 @@ func Test_DoRequest(t *testing.T) {
 	utils.AssertNil(t, err)
 	utils.AssertEqual(t, resp["body"], map[string]interface{}{"Code": "杭州"})
 
+	resp, err = client.DoRequestWithForm(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
+		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
+	utils.AssertNil(t, err)
+	utils.AssertEqual(t, resp["body"], map[string]interface{}{"Code": "杭州"})
+
 	ts = mockServer(204, ``)
 	client.EndpointHost = tea.String(strings.Replace(ts.URL, "http://", "", 1))
 	resp, err = client.DoRequest(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
+		tea.String("AK"), tea.String("/test"), map[string]*string{"test": tea.String("ok")}, nil,
+		map[string]interface{}{"test": "ok"}, runtime)
+	utils.AssertNil(t, err)
+	utils.AssertNil(t, resp["body"])
+
+	resp, err = client.DoRequestWithForm(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
 		tea.String("AK"), tea.String("/test"), map[string]*string{"test": tea.String("ok")}, nil,
 		map[string]interface{}{"test": "ok"}, runtime)
 	utils.AssertNil(t, err)
