@@ -273,6 +273,7 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 			}, headers)
 			if !tea.BoolValue(util.IsUnset(body)) {
 				request_.Body = tea.ToReader(util.ToJSONString(body))
+				request_.Headers["content-type"] = tea.String("application/json; charset=UTF-8;")
 			}
 
 			if !tea.BoolValue(util.IsUnset(query)) {
