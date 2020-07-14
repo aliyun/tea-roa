@@ -47,29 +47,31 @@ class TestClient(TestCase):
             self.assertEqual("""{'code': 'ParameterMissing', 'message': "'accessKeyId' and 'accessKeySecret' """ +
                              """or 'credential' can not be unset"}""", str(e))
 
-        conf = Config(
-            access_key_id='access_key_id',
-            security_token='security_token',
-            protocol='protocol',
-            region_id='region_id',
-            read_timeout=1000,
-            connect_timeout=5000,
-            http_proxy='http_proxy',
-            https_proxy='https_proxy',
-            endpoint='endpoint',
-            no_proxy='no_proxy',
-            max_idle_conns=1,
-            network='network',
-            suffix='suffix',
-            type='type',
-        )
-        conf.access_key_secret = 'access_key_secret'
+        conf = Config()
+        dic = {
+            'accessKeyId': 'access_key_id',
+            'accessKeySecret': 'access_key_secret',
+            'securityToken': 'security_token',
+            'protocol': 'protocol',
+            'regionId': 'region_id',
+            'readTimeout': 1000,
+            'connectTimeout': 5000,
+            'httpsProxy': 'https_proxy',
+            'endpoint': 'endpoint',
+            'noProxy': 'no_proxy',
+            'maxIdleConns': 1,
+            'network': 'network',
+            'suffix': 'suffix',
+            'type': 'type',
+        }
+        conf.from_map(dic)
         client = Client(conf)
         self.assertIsNotNone(client)
 
     def test_do_request(self):
         conf = Config(
             access_key_id='access_key_id',
+            access_key_secret='access_key_secret',
             security_token='security_token',
             protocol='http',
             region_id='region_id',
@@ -78,7 +80,6 @@ class TestClient(TestCase):
             endpoint='127.0.0.1:8888',
             max_idle_conns=1
         )
-        conf.access_key_secret = 'access_key_secret'
         runtime = RuntimeOptions(
             autoretry=False,
             max_attempts=2
@@ -111,3 +112,75 @@ class TestClient(TestCase):
             )
         except Exception as e:
             self.assertIsInstance(e, UnretryableException)
+
+    def test_do_request_with_form(self):
+        conf = Config(
+            access_key_id='access_key_id',
+            access_key_secret='access_key_secret',
+            security_token='security_token',
+            protocol='http',
+            region_id='region_id',
+            read_timeout=10000,
+            connect_timeout=5000,
+            endpoint='127.0.0.1:8888',
+            max_idle_conns=1
+        )
+        runtime = RuntimeOptions(
+            autoretry=False,
+            max_attempts=2
+        )
+        client = Client(conf)
+        res = client.do_request_with_form(
+            protocol='http',
+            method='GET',
+            version='version',
+            auth_type='auth_type',
+            pathname='',
+            query={},
+            body={},
+            headers={},
+            runtime=runtime
+        )
+        res.pop('headers')
+        self.assertEqual({'body': {'result': 'server test'}}, res)
+        try:
+            client.do_request_with_form(
+                protocol='http',
+                method='POST',
+                version='version',
+                auth_type='auth_type',
+                pathname='',
+                query={},
+                headers={},
+                body={},
+                runtime=runtime
+            )
+        except Exception as e:
+            self.assertIsInstance(e, UnretryableException)
+
+    def test_default_any(self):
+        res = Client.default_any('test', 'default')
+        self.assertEqual('test', res)
+        res = Client.default_any(None, 'default')
+        self.assertEqual('default', res)
+
+    def test_check_config(self):
+        config = Config(
+            access_key_id='access_key_id',
+            access_key_secret='access_key_secret',
+            region_id='cn-hangzhou',
+            endpoint='127.0.0.1:8888',
+        )
+        client = Client(config, _endpoint_rule='endpoint_rule')
+        client.check_config(config)
+        config = Config(
+            access_key_id='access_key_id',
+            access_key_secret='access_key_secret',
+            region_id='cn-hangzhou',
+        )
+        client = Client(config)
+        try:
+            client.check_config(config)
+        except Exception as e:
+            self.assertEqual(e.code, 'ParameterMissing')
+            self.assertEqual(e.message, "'config.endpoint' can not be empty")
