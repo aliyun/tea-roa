@@ -1,13 +1,12 @@
 # This file is auto-generated, don't edit it. Thanks.
 from Tea.model import TeaModel
 
-"""
-Model for initing client
-"""
-
 
 class Config(TeaModel):
-    def __init__(self, access_key_id=None, access_key_secret=None, security_token=None, protocol=None, region_id=None, read_timeout=None, connect_timeout=None, http_proxy=None, https_proxy=None, credential=None, endpoint=None, no_proxy=None, max_idle_conns=None, network=None, suffix=None, type=None):
+    """
+    Model for initing client
+    """
+    def __init__(self, access_key_id=None, access_key_secret=None, security_token=None, protocol=None, region_id=None, read_timeout=None, connect_timeout=None, http_proxy=None, https_proxy=None, credential=None, endpoint=None, no_proxy=None, user_agent=None, max_idle_conns=None, network=None, suffix=None, type=None):
         self.access_key_id = access_key_id
         self.access_key_secret = access_key_secret
         self.security_token = security_token
@@ -20,6 +19,7 @@ class Config(TeaModel):
         self.credential = credential
         self.endpoint = endpoint
         self.no_proxy = no_proxy
+        self.user_agent = user_agent
         self.max_idle_conns = max_idle_conns
         self.network = network
         self.suffix = suffix
@@ -49,6 +49,7 @@ class Config(TeaModel):
         result['credential'] = self.credential
         result['endpoint'] = self.endpoint
         result['noProxy'] = self.no_proxy
+        result['userAgent'] = self.user_agent
         result['maxIdleConns'] = self.max_idle_conns
         result['network'] = self.network
         result['suffix'] = self.suffix
@@ -68,6 +69,7 @@ class Config(TeaModel):
         self.credential = map.get('credential')
         self.endpoint = map.get('endpoint')
         self.no_proxy = map.get('noProxy')
+        self.user_agent = map.get('userAgent')
         self.max_idle_conns = map.get('maxIdleConns')
         self.network = map.get('network')
         self.suffix = map.get('suffix')
