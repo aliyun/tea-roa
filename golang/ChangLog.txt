@@ -1,3 +1,6 @@
+2020-07-15 Version: v1.2.2
+- Update mod.
+
 2020-07-13 Version: v1.2.1
 - Add Content-Type.
 
