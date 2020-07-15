@@ -142,7 +142,7 @@ class TestClient(TestCase):
             runtime=runtime
         )
         res.pop('headers')
-        self.assertEqual({'body': {'result': 'server test'}}, res)
+        self.assertEqual({'body': {'reslt': 'server test'}}, res)
         try:
             client.do_request_with_form(
                 protocol='http',

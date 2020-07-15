@@ -73,7 +73,7 @@ function run_python {
   pip install coverage
   pip install -r ./tests/test_requirements.txt
 
-  coverage run --source="./alibabacloud_tea_roa" ./tests/run_test.py
+  coverage run --source="./alibabacloud_tea_roa" -m pytest tests/test_*
 
   cd ../
   upload_codecov_report python python
