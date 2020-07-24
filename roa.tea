@@ -185,6 +185,98 @@ api doRequest(version: string, protocol: string, method: string, authType: strin
 
 /**
  * Encapsulate the request and invoke the network
+ * @param action api name
+ * @param version product version
+ * @param protocol http or https
+ * @param method e.g. GET
+ * @param authType when authType is Anonymous, the signature will not be calculate
+ * @param pathname pathname of every api
+ * @param query which contains request params
+ * @param headers request headers
+ * @param body content of request
+ * @param runtime which controls some details of call api, such as retry times
+ * @return the response
+ */
+api doRequestWithAction(action: string, version: string, protocol: string, method: string, authType: string, pathname: string, query: map[string]string, headers: map[string]string, body: any, runtime: Util.RuntimeOptions): object {
+  __request.protocol = Util.defaultString(@protocol, protocol);
+  __request.method = method;
+  __request.pathname = pathname;
+  __request.headers = {
+    date = Util.getDateUTCString(),
+    host = @endpointHost,
+    accept = 'application/json',
+    x-acs-signature-nonce = Util.getNonce(),
+    x-acs-signature-method = 'HMAC-SHA1',
+    x-acs-signature-version = '1.0',
+    x-acs-version = version,
+    x-acs-action = action,
+    user-agent = Util.getUserAgent(@userAgent),
+    // x-sdk-client': helper.DEFAULT_CLIENT
+    ...headers
+  };
+
+  if (!Util.isUnset(body)) {
+    __request.body = Util.toJSONString(body);
+    __request.headers.content-type = 'application/json; charset=UTF-8;';
+  }
+
+  if (!Util.isUnset(query)) {
+    __request.query = query;
+  }
+
+  if (!Util.equalString(authType, 'Anonymous')) {
+    var accessKeyId = @credential.getAccessKeyId();
+    var accessKeySecret = @credential.getAccessKeySecret();
+    var securityToken = @credential.getSecurityToken();
+    if (!Util.empty(securityToken)) {
+      __request.headers.x-acs-accesskey-id = accessKeyId;
+      __request.headers.x-acs-security-token = securityToken;
+    }
+
+    var stringToSign = ROAUtil.getStringToSign(__request);
+    __request.headers.authorization = `acs ${accessKeyId}:${ROAUtil.getSignature(stringToSign, accessKeySecret)}`;
+  }
+} returns {
+  if (Util.equalNumber(__response.statusCode, 204)) {
+    return {
+      headers = __response.headers
+    };
+  }
+  var result = Util.readAsJSON(__response.body);
+
+  if (Util.is4xx(__response.statusCode) || Util.is5xx(__response.statusCode)) {
+    var err = Util.assertAsMap(result);
+    throw {
+      code = `${defaultAny(err.Code, err.code)}Error`,
+      message = `code: ${__response.statusCode}, ${defaultAny(err.Message, err.message)} requestid: ${defaultAny(err.RequestId, err.requestId)}`,
+      data = err,
+    }
+  }
+  return {
+    headers = __response.headers,
+    body = result
+  };
+} runtime {
+  timeouted = 'retry',
+  readTimeout = Util.defaultNumber(runtime.readTimeout, @readTimeout),
+  connectTimeout = Util.defaultNumber(runtime.connectTimeout, @connectTimeout),
+  httpProxy = Util.defaultString(runtime.httpProxy, @httpProxy),
+  httpsProxy = Util.defaultString(runtime.httpsProxy, @httpsProxy),
+  noProxy = Util.defaultString(runtime.noProxy, @noProxy),
+  maxIdleConns = Util.defaultNumber(runtime.maxIdleConns, @maxIdleConns),
+  retry = {
+    retryable = runtime.autoretry,
+    maxAttempts = Util.defaultNumber(runtime.maxAttempts, 3)
+  },
+  backoff = {
+    policy = Util.defaultString(runtime.backoffPolicy, 'no'),
+    period = Util.defaultNumber(runtime.backoffPeriod, 1)
+  },
+  ignoreSSL = runtime.ignoreSSL
+}
+
+/**
+ * Encapsulate the request and invoke the network
  * @param version product version
  * @param protocol http or https
  * @param method e.g. GET
