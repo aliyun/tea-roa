@@ -156,6 +156,53 @@ class TestClient(TestCase):
         except Exception as e:
             self.assertIsInstance(e, UnretryableException)
 
+    def test_do_request_with_action(self):
+        conf = Config(
+            access_key_id='access_key_id',
+            access_key_secret='access_key_secret',
+            security_token='security_token',
+            protocol='http',
+            region_id='region_id',
+            read_timeout=10000,
+            connect_timeout=5000,
+            endpoint='127.0.0.1:8888',
+            max_idle_conns=1
+        )
+        runtime = RuntimeOptions(
+            autoretry=False,
+            max_attempts=2
+        )
+        client = Client(conf)
+        res = client.do_request_with_action(
+            action='get_message',
+            protocol='http',
+            method='GET',
+            version='version',
+            auth_type='auth_type',
+            pathname='',
+            query={},
+            body={},
+            headers={},
+            runtime=runtime
+        )
+        res.pop('headers')
+        self.assertEqual({'body': {'result': 'server test'}}, res)
+        try:
+            client.do_request_with_action(
+                action='get_message',
+                protocol='http',
+                method='POST',
+                version='version',
+                auth_type='auth_type',
+                pathname='',
+                query={},
+                headers={},
+                body={},
+                runtime=runtime
+            )
+        except Exception as e:
+            self.assertIsInstance(e, UnretryableException)
+
     def test_default_any(self):
         res = Client.default_any('test', 'default')
         self.assertEqual('test', res)
