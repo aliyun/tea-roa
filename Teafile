@@ -15,7 +15,7 @@
     "Credential": "alibabacloud:Credential:*"
   },
   "releases": {
-    "ts": "@alicloud/roa-client:^0.0.1",
+    "ts": "@alicloud/roa-client:^1.0.0",
     "go": "github.com/alibabacloud-go/tea-roa/client:v1.2.3",
     "csharp": "AlibabaCloud.ROAClient:1.0.0",
     "java": "com.aliyun:tea-roa:0.0.6",
