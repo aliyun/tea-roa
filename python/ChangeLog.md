@@ -1,3 +1,8 @@
+### 2020-07-27 Version 0.1.0
+
+* Add do_request_with_action.
+* Add do_request_with_form.
+
 ### 2020-07-08 Version 0.0.9
 
 * Add validate for endpoint

@@ -20,7 +20,7 @@
     "csharp": "AlibabaCloud.ROAClient:0.0.4",
     "java": "com.aliyun:tea-roa:0.0.5",
     "php": "alibabacloud/tea-roa:^0.1.0",
-    "python": "alibabacloud_tea_roa:0.0.9"
+    "python": "alibabacloud_tea_roa:0.1.0"
   },
   "csharp": {
     "namespace": "AlibabaCloud.ROAClient",
