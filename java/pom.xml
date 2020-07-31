@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.aliyun</groupId>
   <artifactId>tea-roa</artifactId>
-  <version>0.0.6</version>
+  <version>0.0.7</version>
   <packaging>jar</packaging>
   <name>tea-roa</name>
   <description>Aliyun Tea ROA for Java
@@ -55,7 +55,6 @@
       <groupId>com.aliyun</groupId>
       <artifactId>credentials-java</artifactId>
       <version>0.2.0</version>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.aliyun</groupId>
