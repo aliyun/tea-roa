@@ -1,7 +1,7 @@
 {
   "scope": "alibabacloud",
   "name": "ROA",
-  "version": "0.3.6",
+  "version": "0.1.0",
   "main": "./roa.tea",
   "maintainers": [
     {
@@ -10,7 +10,7 @@
     }
   ],
   "libraries": {
-    "Util": "alibabacloud:Util:*",
+    "Util": "darabonba:Util:*",
     "ROAUtil": "alibabacloud:ROAUtil:*",
     "Credential": "alibabacloud:Credential:*"
   },
