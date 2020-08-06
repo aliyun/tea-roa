@@ -290,7 +290,7 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 			}, headers)
 			if !tea.BoolValue(util.IsUnset(body)) {
 				request_.Body = tea.ToReader(util.ToJSONString(body))
-				request_.Headers["content-type"] = tea.String("application/json; charset=UTF-8;")
+				request_.Headers["content-type"] = tea.String("application/json; charset=utf-8")
 			}
 
 			if !tea.BoolValue(util.IsUnset(query)) {
@@ -430,7 +430,7 @@ func (client *Client) DoRequestWithAction(action *string, version *string, proto
 			}, headers)
 			if !tea.BoolValue(util.IsUnset(body)) {
 				request_.Body = tea.ToReader(util.ToJSONString(body))
-				request_.Headers["content-type"] = tea.String("application/json; charset=UTF-8;")
+				request_.Headers["content-type"] = tea.String("application/json; charset=utf-8")
 			}
 
 			if !tea.BoolValue(util.IsUnset(query)) {
