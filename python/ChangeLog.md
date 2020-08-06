@@ -1,3 +1,7 @@
+### 2020-08-06 Version 0.1.1
+
+* Change Content-Type.
+
 ### 2020-07-27 Version 0.1.0
 
 * Add do_request_with_action.

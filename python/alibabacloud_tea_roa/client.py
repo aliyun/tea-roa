@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
 import time
 
 from alibabacloud_credentials.client import Client as CredentialClient
-from alibabacloud_tea_roa import models as _roa_models
+from alibabacloud_tea_roa import models as roa_models
 from alibabacloud_tea_util.client import Client as UtilClient
 from Tea.exceptions import TeaException
 from alibabacloud_credentials import models as credential_models
@@ -14,11 +15,14 @@ from alibabacloud_roa_util.client import Client as ROAUtilClient
 from Tea.exceptions import UnretryableException
 
 
-class Client:
+class Client(object):
     """
     This is for ROA SDK
     """
-    def __init__(self, config, _protocol=None, _read_timeout=None, _connect_timeout=None, _http_proxy=None, _https_proxy=None, _no_proxy=None, _max_idle_conns=None, _endpoint_host=None, _network=None, _endpoint_rule=None, _endpoint_map=None, _suffix=None, _product_id=None, _region_id=None, _user_agent=None, _credential=None):
+    def __init__(self, config, _protocol=None, _read_timeout=None, _connect_timeout=None, _http_proxy=None,
+                 _https_proxy=None, _no_proxy=None, _max_idle_conns=None, _endpoint_host=None, _network=None,
+                 _endpoint_rule=None, _endpoint_map=None, _suffix=None, _product_id=None, _region_id=None, _user_agent=None,
+                 _credential=None):
         """
         Init client with Config
 
@@ -34,13 +38,13 @@ class Client:
         self._endpoint_host = _endpoint_host
         self._network = _network
         self._endpoint_rule = _endpoint_rule
-        self._endpoint_map = {}
+        self._endpoint_map = _endpoint_map
         self._suffix = _suffix
         self._product_id = _product_id
         self._region_id = _region_id
         self._user_agent = _user_agent
         self._credential = _credential
-        if UtilClient.is_unset(config.to_map()):
+        if UtilClient.is_unset(config):
             raise TeaException({
                 "code": "ParameterMissing",
                 "message": "'config' can not be unset"
@@ -99,6 +103,7 @@ class Client:
         :type headers: dict
         :param headers: request headers
 
+        :type body: any
         :param body: content of request
 
         :param runtime: which controls some details of call api, such as retry times
@@ -152,7 +157,7 @@ class Client:
                 }, headers)
                 if not UtilClient.is_unset(body):
                     _request.body = UtilClient.to_jsonstring(body)
-                    _request.headers["content-type"] = "application/json; charset=UTF-8;"
+                    _request.headers["content-type"] = "application/json; charset=utf-8"
                 if not UtilClient.is_unset(query):
                     _request.query = query
                 if not UtilClient.equal_string(auth_type, "Anonymous"):
@@ -217,6 +222,7 @@ class Client:
         :type headers: dict
         :param headers: request headers
 
+        :type body: any
         :param body: content of request
 
         :param runtime: which controls some details of call api, such as retry times
@@ -271,7 +277,7 @@ class Client:
                 }, headers)
                 if not UtilClient.is_unset(body):
                     _request.body = UtilClient.to_jsonstring(body)
-                    _request.headers["content-type"] = "application/json; charset=UTF-8;"
+                    _request.headers["content-type"] = "application/json; charset=utf-8"
                 if not UtilClient.is_unset(query):
                     _request.query = query
                 if not UtilClient.equal_string(auth_type, "Anonymous"):
@@ -429,8 +435,10 @@ class Client:
         """
         If inputValue is not null, return it or return defaultValue
 
+        :type input_value: any
         :param input_value:  users input value
 
+        :type default_value: any
         :param default_value: default value
 
         :return: the final result
