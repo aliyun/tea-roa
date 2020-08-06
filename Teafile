@@ -18,7 +18,7 @@
     "ts": "@alicloud/roa-client:^1.0.0",
     "go": "github.com/alibabacloud-go/tea-roa/client:v1.2.4",
     "csharp": "AlibabaCloud.ROAClient:1.0.0",
-    "java": "com.aliyun:tea-roa:0.0.7",
+    "java": "com.aliyun:tea-roa:0.0.8",
     "php": "alibabacloud/tea-roa:^0.2.0",
     "python": "alibabacloud_tea_roa:0.1.0"
   },

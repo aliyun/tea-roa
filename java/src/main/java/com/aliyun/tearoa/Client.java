@@ -119,7 +119,7 @@ public class Client {
                 );
                 if (!com.aliyun.teautil.Common.isUnset(body)) {
                     request_.body = Tea.toReadable(com.aliyun.teautil.Common.toJSONString(body));
-                    request_.headers.put("content-type", "application/json; charset=UTF-8;");
+                    request_.headers.put("content-type", "application/json; charset=utf-8");
                 }
 
                 if (!com.aliyun.teautil.Common.isUnset(query)) {
@@ -225,7 +225,7 @@ public class Client {
                 );
                 if (!com.aliyun.teautil.Common.isUnset(body)) {
                     request_.body = Tea.toReadable(com.aliyun.teautil.Common.toJSONString(body));
-                    request_.headers.put("content-type", "application/json; charset=UTF-8;");
+                    request_.headers.put("content-type", "application/json; charset=utf-8");
                 }
 
                 if (!com.aliyun.teautil.Common.isUnset(query)) {
