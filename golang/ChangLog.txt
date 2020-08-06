@@ -1,3 +1,6 @@
+2020-08-06 Version: v1.2.4
+- Change content-type.
+
 2020-07-24 Version: v1.2.3
 - Add doRequestWithAction.
 
