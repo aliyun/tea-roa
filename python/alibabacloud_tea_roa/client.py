@@ -26,7 +26,7 @@ class Client(object):
         """
         Init client with Config
 
-        :param config: config contains the necessary information to create a client
+        @param config: config contains the necessary information to create a client
         """
         self._protocol = _protocol
         self._read_timeout = _read_timeout
@@ -82,33 +82,33 @@ class Client(object):
         """
         Encapsulate the request and invoke the network
 
-        :type version: str
-        :param version: product version
+        @type version: str
+        @param version: product version
 
-        :type protocol: str
-        :param protocol: http or https
+        @type protocol: str
+        @param protocol: http or https
 
-        :type method: str
-        :param method: e.g. GET
+        @type method: str
+        @param method: e.g. GET
 
-        :type auth_type: str
-        :param auth_type: when authType is Anonymous, the signature will not be calculate
+        @type auth_type: str
+        @param auth_type: when authType is Anonymous, the signature will not be calculate
 
-        :type pathname: str
-        :param pathname: pathname of every api
+        @type pathname: str
+        @param pathname: pathname of every api
 
-        :type query: dict
-        :param query: which contains request params
+        @type query: dict
+        @param query: which contains request params
 
-        :type headers: dict
-        :param headers: request headers
+        @type headers: dict
+        @param headers: request headers
 
-        :type body: any
-        :param body: content of request
+        @param body: content of request
 
-        :param runtime: which controls some details of call api, such as retry times
+        @param runtime: which controls some details of call api, such as retry times
 
-        :return: the response
+        @rtype: dict
+        @return: the response
         """
         runtime.validate()
         _runtime = {
@@ -198,36 +198,36 @@ class Client(object):
         """
         Encapsulate the request and invoke the network
 
-        :type action: str
-        :param action: api name
+        @type action: str
+        @param action: api name
 
-        :type version: str
-        :param version: product version
+        @type version: str
+        @param version: product version
 
-        :type protocol: str
-        :param protocol: http or https
+        @type protocol: str
+        @param protocol: http or https
 
-        :type method: str
-        :param method: e.g. GET
+        @type method: str
+        @param method: e.g. GET
 
-        :type auth_type: str
-        :param auth_type: when authType is Anonymous, the signature will not be calculate
+        @type auth_type: str
+        @param auth_type: when authType is Anonymous, the signature will not be calculate
 
-        :type pathname: str
-        :param pathname: pathname of every api
+        @type pathname: str
+        @param pathname: pathname of every api
 
-        :type query: dict
-        :param query: which contains request params
+        @type query: dict
+        @param query: which contains request params
 
-        :type headers: dict
-        :param headers: request headers
+        @type headers: dict
+        @param headers: request headers
 
-        :type body: any
-        :param body: content of request
+        @param body: content of request
 
-        :param runtime: which controls some details of call api, such as retry times
+        @param runtime: which controls some details of call api, such as retry times
 
-        :return: the response
+        @rtype: dict
+        @return: the response
         """
         runtime.validate()
         _runtime = {
@@ -318,33 +318,34 @@ class Client(object):
         """
         Encapsulate the request and invoke the network
 
-        :type version: str
-        :param version: product version
+        @type version: str
+        @param version: product version
 
-        :type protocol: str
-        :param protocol: http or https
+        @type protocol: str
+        @param protocol: http or https
 
-        :type method: str
-        :param method: e.g. GET
+        @type method: str
+        @param method: e.g. GET
 
-        :type auth_type: str
-        :param auth_type: when authType is Anonymous, the signature will not be calculate
+        @type auth_type: str
+        @param auth_type: when authType is Anonymous, the signature will not be calculate
 
-        :type pathname: str
-        :param pathname: pathname of every api
+        @type pathname: str
+        @param pathname: pathname of every api
 
-        :type query: dict
-        :param query: which contains request params
+        @type query: dict
+        @param query: which contains request params
 
-        :type headers: dict
-        :param headers: request headers
+        @type headers: dict
+        @param headers: request headers
 
-        :type body: dict
-        :param body: content of request
+        @type body: dict
+        @param body: content of request
 
-        :param runtime: which controls some details of call api, such as retry times
+        @param runtime: which controls some details of call api, such as retry times
 
-        :return: the response
+        @rtype: dict
+        @return: the response
         """
         runtime.validate()
         _runtime = {
@@ -435,13 +436,11 @@ class Client(object):
         """
         If inputValue is not null, return it or return defaultValue
 
-        :type input_value: any
-        :param input_value:  users input value
+        @param input_value:  users input value
 
-        :type default_value: any
-        :param default_value: default value
+        @param default_value: default value
 
-        :return: the final result
+        @return: the final result
         """
         if UtilClient.is_unset(input_value):
             return default_value
@@ -451,7 +450,7 @@ class Client(object):
         """
         If the endpointRule and config.endpoint are empty, throw error
 
-        :param config: config contains the necessary information to create a client
+        @param config: config contains the necessary information to create a client
         """
         if UtilClient.empty(self._endpoint_rule) and UtilClient.empty(config.endpoint):
             raise TeaException({
