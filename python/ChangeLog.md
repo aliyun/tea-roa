@@ -1,3 +1,7 @@
+### 2020-08-31 Version 0.1.2
+
+* Fix non-model object call validate.
+
 ### 2020-08-06 Version 0.1.1
 
 * Change Content-Type.
