@@ -26,38 +26,41 @@ public class Client {
      * Init client with Config
      * @param config config contains the necessary information to create a client
      */
-    public Client(Config config) throws Exception {
-        if (com.aliyun.teautil.Common.isUnset(TeaModel.buildMap(config))) {
-            throw new TeaException(TeaConverter.buildMap(
-                new TeaPair("code", "ParameterMissing"),
-                new TeaPair("message", "'config' can not be unset")
-            ));
-        }
-
-        com.aliyun.teautil.Common.validateModel(config);
-        if (!com.aliyun.teautil.Common.empty(config.accessKeyId) && !com.aliyun.teautil.Common.empty(config.accessKeySecret)) {
-            if (!com.aliyun.teautil.Common.empty(config.securityToken)) {
-                config.type = "sts";
-            } else {
-                config.type = "access_key";
+    public Client(Config config) {
+        try {
+            if (com.aliyun.teautil.Common.isUnset(TeaModel.buildMap(config))) {
+                throw new TeaException(TeaConverter.buildMap(
+                        new TeaPair("code", "ParameterMissing"),
+                        new TeaPair("message", "'config' can not be unset")
+                ));
             }
 
-            com.aliyun.credentials.models.Config credentialConfig = com.aliyun.credentials.models.Config.build(TeaConverter.buildMap(
-                new TeaPair("accessKeyId", config.accessKeyId),
-                new TeaPair("type", config.type),
-                new TeaPair("accessKeySecret", config.accessKeySecret),
-                new TeaPair("securityToken", config.securityToken)
-            ));
-            this._credential = new com.aliyun.credentials.Client(credentialConfig);
-        } else if (!com.aliyun.teautil.Common.isUnset(config.credential)) {
-            this._credential = config.credential;
-        } else {
-            throw new TeaException(TeaConverter.buildMap(
-                new TeaPair("code", "ParameterMissing"),
-                new TeaPair("message", "'accessKeyId' and 'accessKeySecret' or 'credential' can not be unset")
-            ));
-        }
+            com.aliyun.teautil.Common.validateModel(config);
+            if (!com.aliyun.teautil.Common.empty(config.accessKeyId) && !com.aliyun.teautil.Common.empty(config.accessKeySecret)) {
+                if (!com.aliyun.teautil.Common.empty(config.securityToken)) {
+                    config.type = "sts";
+                } else {
+                    config.type = "access_key";
+                }
 
+                com.aliyun.credentials.models.Config credentialConfig = com.aliyun.credentials.models.Config.build(TeaConverter.buildMap(
+                        new TeaPair("accessKeyId", config.accessKeyId),
+                        new TeaPair("type", config.type),
+                        new TeaPair("accessKeySecret", config.accessKeySecret),
+                        new TeaPair("securityToken", config.securityToken)
+                ));
+                this._credential = new com.aliyun.credentials.Client(credentialConfig);
+            } else if (!com.aliyun.teautil.Common.isUnset(config.credential)) {
+                this._credential = config.credential;
+            } else {
+                throw new TeaException(TeaConverter.buildMap(
+                        new TeaPair("code", "ParameterMissing"),
+                        new TeaPair("message", "'accessKeyId' and 'accessKeySecret' or 'credential' can not be unset")
+                ));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this._regionId = config.regionId;
         this._protocol = config.protocol;
         this._endpointHost = config.endpoint;
@@ -68,7 +71,7 @@ public class Client {
         this._maxIdleConns = config.maxIdleConns;
     }
 
-    public java.util.Map<String, ?> doRequest(String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, Object body, com.aliyun.teautil.models.RuntimeOptions runtime) throws Exception {
+    public java.util.Map<String, ?> doRequest(String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, Object body, com.aliyun.teautil.models.RuntimeOptions runtime) {
         java.util.Map<String, Object> runtime_ = TeaConverter.buildMap(
             new TeaPair("timeouted", "retry"),
             new TeaPair("readTimeout", com.aliyun.teautil.Common.defaultNumber(runtime.readTimeout, _readTimeout)),
@@ -95,7 +98,11 @@ public class Client {
             if (_retryTimes > 0) {
                 int backoffTime = Tea.getBackoffTime(runtime_.get("backoff"), _retryTimes);
                 if (backoffTime > 0) {
-                    Tea.sleep(backoffTime);
+                    try {
+                        Tea.sleep(backoffTime);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             _retryTimes = _retryTimes + 1;
@@ -166,14 +173,14 @@ public class Client {
                 if (Tea.isRetryable(e)) {
                     continue;
                 }
-                throw e;
+                throw new RuntimeException(e);
             }
         }
 
-        throw new TeaUnretryableException(_lastRequest);
+        throw new RuntimeException(new TeaUnretryableException(_lastRequest));
     }
 
-    public java.util.Map<String, ?> doRequestWithAction(String action, String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, Object body, com.aliyun.teautil.models.RuntimeOptions runtime) throws Exception {
+    public java.util.Map<String, ?> doRequestWithAction(String action, String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, Object body, com.aliyun.teautil.models.RuntimeOptions runtime) {
         java.util.Map<String, Object> runtime_ = TeaConverter.buildMap(
             new TeaPair("timeouted", "retry"),
             new TeaPair("readTimeout", com.aliyun.teautil.Common.defaultNumber(runtime.readTimeout, _readTimeout)),
@@ -200,7 +207,11 @@ public class Client {
             if (_retryTimes > 0) {
                 int backoffTime = Tea.getBackoffTime(runtime_.get("backoff"), _retryTimes);
                 if (backoffTime > 0) {
-                    Tea.sleep(backoffTime);
+                    try {
+                        Tea.sleep(backoffTime);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             _retryTimes = _retryTimes + 1;
@@ -272,14 +283,14 @@ public class Client {
                 if (Tea.isRetryable(e)) {
                     continue;
                 }
-                throw e;
+                throw new RuntimeException(e);
             }
         }
 
-        throw new TeaUnretryableException(_lastRequest);
+        throw new RuntimeException(new TeaUnretryableException(_lastRequest));
     }
 
-    public java.util.Map<String, ?> doRequestWithForm(String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, java.util.Map<String, ?> body, com.aliyun.teautil.models.RuntimeOptions runtime) throws Exception {
+    public java.util.Map<String, ?> doRequestWithForm(String version, String protocol, String method, String authType, String pathname, java.util.Map<String, String> query, java.util.Map<String, String> headers, java.util.Map<String, ?> body, com.aliyun.teautil.models.RuntimeOptions runtime) {
         java.util.Map<String, Object> runtime_ = TeaConverter.buildMap(
             new TeaPair("timeouted", "retry"),
             new TeaPair("readTimeout", com.aliyun.teautil.Common.defaultNumber(runtime.readTimeout, _readTimeout)),
@@ -306,7 +317,11 @@ public class Client {
             if (_retryTimes > 0) {
                 int backoffTime = Tea.getBackoffTime(runtime_.get("backoff"), _retryTimes);
                 if (backoffTime > 0) {
-                    Tea.sleep(backoffTime);
+                    try {
+                        Tea.sleep(backoffTime);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             _retryTimes = _retryTimes + 1;
@@ -377,11 +392,11 @@ public class Client {
                 if (Tea.isRetryable(e)) {
                     continue;
                 }
-                throw e;
+                throw new RuntimeException(e);
             }
         }
 
-        throw new TeaUnretryableException(_lastRequest);
+        throw new RuntimeException(new TeaUnretryableException(_lastRequest));
     }
 
     /**
@@ -390,7 +405,7 @@ public class Client {
      * @param defaultValue default value
      * @return the final result
      */
-    public static Object defaultAny(Object inputValue, Object defaultValue) throws Exception {
+    public static Object defaultAny(Object inputValue, Object defaultValue) {
         if (com.aliyun.teautil.Common.isUnset(inputValue)) {
             return defaultValue;
         }
@@ -402,13 +417,9 @@ public class Client {
      * If the endpointRule and config.endpoint are empty, throw error
      * @param config config contains the necessary information to create a client
      */
-    public void checkConfig(Config config) throws Exception {
+    public void checkConfig(Config config) {
         if (com.aliyun.teautil.Common.empty(_endpointRule) && com.aliyun.teautil.Common.empty(config.endpoint)) {
-            throw new TeaException(TeaConverter.buildMap(
-                new TeaPair("code", "ParameterMissing"),
-                new TeaPair("message", "'config.endpoint' can not be empty")
-            ));
+            throw new RuntimeException("'config.endpoint' can not be empty");
         }
-
     }
 }
