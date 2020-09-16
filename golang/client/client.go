@@ -342,8 +342,8 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 			if tea.BoolValue(util.Is4xx(response_.StatusCode)) || tea.BoolValue(util.Is5xx(response_.StatusCode)) {
 				err := util.AssertAsMap(result)
 				_err = tea.NewSDKError(map[string]interface{}{
-					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])) + "Error",
-					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " requestid: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
+					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])),
+					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " request id: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
 					"data":    err,
 				})
 				return _result, _err
@@ -482,8 +482,8 @@ func (client *Client) DoRequestWithAction(action *string, version *string, proto
 			if tea.BoolValue(util.Is4xx(response_.StatusCode)) || tea.BoolValue(util.Is5xx(response_.StatusCode)) {
 				err := util.AssertAsMap(result)
 				_err = tea.NewSDKError(map[string]interface{}{
-					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])) + "Error",
-					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " requestid: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
+					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])),
+					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " request id: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
 					"data":    err,
 				})
 				return _result, _err
@@ -620,8 +620,8 @@ func (client *Client) DoRequestWithForm(version *string, protocol *string, metho
 			if tea.BoolValue(util.Is4xx(response_.StatusCode)) || tea.BoolValue(util.Is5xx(response_.StatusCode)) {
 				err := util.AssertAsMap(result)
 				_err = tea.NewSDKError(map[string]interface{}{
-					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])) + "Error",
-					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " requestid: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
+					"code":    tea.ToString(DefaultAny(err["Code"], err["code"])),
+					"message": "code: " + tea.ToString(tea.IntValue(response_.StatusCode)) + ", " + tea.ToString(DefaultAny(err["Message"], err["message"])) + " request id: " + tea.ToString(DefaultAny(err["RequestId"], err["requestId"])),
 					"data":    err,
 				})
 				return _result, _err

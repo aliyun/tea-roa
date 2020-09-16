@@ -86,26 +86,26 @@ func Test_DoRequest(t *testing.T) {
 	resp, err := client.DoRequest(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
 		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
 	utils.AssertNotNil(t, err)
-	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
+	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州\n   Message: code: 400, <nil> request id: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
 	utils.AssertNil(t, resp)
 
 	resp, err = client.DoRequestWithForm(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
 		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
 	utils.AssertNotNil(t, err)
-	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
+	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州\n   Message: code: 400, <nil> request id: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
 	utils.AssertNil(t, resp)
 
 	runtime.SetMaxAttempts(3).SetAutoretry(true).SetBackoffPeriod(1).SetBackoffPolicy("ok")
 	resp, err = client.DoRequest(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
 		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
 	utils.AssertNotNil(t, err)
-	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
+	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州\n   Message: code: 400, <nil> request id: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
 	utils.AssertNil(t, resp)
 
 	resp, err = client.DoRequestWithForm(tea.String("2019-12-12"), tea.String("HTTP"), tea.String("GET"),
 		tea.String("AK"), tea.String("/test"), nil, nil, map[string]interface{}{"test": "ok"}, runtime)
 	utils.AssertNotNil(t, err)
-	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州Error\n   Message: code: 400, <nil> requestid: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
+	utils.AssertEqual(t, err.Error(), "SDKError:\n   Code: 杭州\n   Message: code: 400, <nil> request id: <nil>\n   Data: {\"Code\":\"杭州\"}\n")
 	utils.AssertNil(t, resp)
 
 	ts = mockServer(200, `{"Code": "杭州"}`)
