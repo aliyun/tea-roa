@@ -3,6 +3,9 @@
 
 # Alibaba Cloud ROA Client
 
+[![Travis Build Status](https://travis-ci.org/aliyun/tea-roa.svg?branch=master)](https://travis-ci.org/aliyun/tea-roa)
+[![codecov](https://codecov.io/gh/aliyun/tea-roa/branch/master/graph/badge.svg)](https://codecov.io/gh/aliyun/tea-roa)
+
 ## 安装
 
 - [ROA Client for Go](./golang/README-CN.md)
