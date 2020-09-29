@@ -142,9 +142,9 @@ class Roa
         $_lastException = null;
         $_now           = time();
         $_retryTimes    = 0;
-        while (Tea::allowRetry($_runtime['retry'], $_retryTimes, $_now)) {
+        while (Tea::allowRetry(@$_runtime['retry'], $_retryTimes, $_now)) {
             if ($_retryTimes > 0) {
-                $_backoffTime = Tea::getBackoffTime($_runtime['backoff'], $_retryTimes);
+                $_backoffTime = Tea::getBackoffTime(@$_runtime['backoff'], $_retryTimes);
                 if ($_backoffTime > 0) {
                     Tea::sleep($_backoffTime);
                 }
@@ -197,8 +197,8 @@ class Roa
                     $err = Utils::assertAsMap($result);
 
                     throw new TeaError([
-                        'code'    => '' . (string) (self::defaultAny($err['Code'], $err['code'])) . '',
-                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny($err['Message'], $err['message'])) . ' request id: ' . (string) (self::defaultAny($err['RequestId'], $err['requestId'])) . '',
+                        'code'    => '' . (string) (self::defaultAny(@$err['Code'], @$err['code'])) . '',
+                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny(@$err['Message'], @$err['message'])) . ' request id: ' . (string) (self::defaultAny(@$err['RequestId'], @$err['requestId'])) . '',
                         'data'    => $err,
                     ]);
                 }
@@ -269,9 +269,9 @@ class Roa
         $_lastException = null;
         $_now           = time();
         $_retryTimes    = 0;
-        while (Tea::allowRetry($_runtime['retry'], $_retryTimes, $_now)) {
+        while (Tea::allowRetry(@$_runtime['retry'], $_retryTimes, $_now)) {
             if ($_retryTimes > 0) {
-                $_backoffTime = Tea::getBackoffTime($_runtime['backoff'], $_retryTimes);
+                $_backoffTime = Tea::getBackoffTime(@$_runtime['backoff'], $_retryTimes);
                 if ($_backoffTime > 0) {
                     Tea::sleep($_backoffTime);
                 }
@@ -325,8 +325,8 @@ class Roa
                     $err = Utils::assertAsMap($result);
 
                     throw new TeaError([
-                        'code'    => '' . (string) (self::defaultAny($err['Code'], $err['code'])) . '',
-                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny($err['Message'], $err['message'])) . ' request id: ' . (string) (self::defaultAny($err['RequestId'], $err['requestId'])) . '',
+                        'code'    => '' . (string) (self::defaultAny(@$err['Code'], @$err['code'])) . '',
+                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny(@$err['Message'], @$err['message'])) . ' request id: ' . (string) (self::defaultAny(@$err['RequestId'], @$err['requestId'])) . '',
                         'data'    => $err,
                     ]);
                 }
@@ -396,9 +396,9 @@ class Roa
         $_lastException = null;
         $_now           = time();
         $_retryTimes    = 0;
-        while (Tea::allowRetry($_runtime['retry'], $_retryTimes, $_now)) {
+        while (Tea::allowRetry(@$_runtime['retry'], $_retryTimes, $_now)) {
             if ($_retryTimes > 0) {
-                $_backoffTime = Tea::getBackoffTime($_runtime['backoff'], $_retryTimes);
+                $_backoffTime = Tea::getBackoffTime(@$_runtime['backoff'], $_retryTimes);
                 if ($_backoffTime > 0) {
                     Tea::sleep($_backoffTime);
                 }
@@ -451,8 +451,8 @@ class Roa
                     $err = Utils::assertAsMap($result);
 
                     throw new TeaError([
-                        'code'    => '' . (string) (self::defaultAny($err['Code'], $err['code'])) . '',
-                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny($err['Message'], $err['message'])) . ' request id: ' . (string) (self::defaultAny($err['RequestId'], $err['requestId'])) . '',
+                        'code'    => '' . (string) (self::defaultAny(@$err['Code'], @$err['code'])) . '',
+                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny(@$err['Message'], @$err['message'])) . ' request id: ' . (string) (self::defaultAny(@$err['RequestId'], @$err['requestId'])) . '',
                         'data'    => $err,
                     ]);
                 }
