@@ -4,6 +4,7 @@
 
 namespace AlibabaCloud\Tea\Roa\Roa;
 
+use AlibabaCloud\Credentials\Credential;
 use AlibabaCloud\Tea\Model;
 
 /**

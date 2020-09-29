@@ -1,10 +1,10 @@
-English | [简体中文](README-CN.md)
+[English](README.md) | 简体中文
 
 ![](https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg)
 
 ## Alibaba Cloud ROA Client
 
-## Installation
+## 安装
 
 ### Composer
 
@@ -12,19 +12,19 @@ English | [简体中文](README-CN.md)
 composer require alibabacloud/tea-roa
 ```
 
-## Issues
+## 问题
 
-[Opening an Issue](https://github.com/aliyun/tea-roa/issues/new), Issues not conforming to the guidelines may be closed immediately.
+[提交 Issue](https://github.com/aliyun/tea-roa/issues/new)，不符合指南的问题可能会立即关闭。
 
-## Changelog
+## 发行说明
 
-Detailed changes for each release are documented in the [release notes](./ChangeLog.txt).
+每个版本的详细更改记录在[发行说明](./ChangeLog.txt)中。
 
-## References
+## 相关
 
-* [Latest Release](https://github.com/aliyun/tea-roa)
+* [最新源码](https://github.com/aliyun/tea-roa)
 
-## License
+## 许可证
 
 [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 

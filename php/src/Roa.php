@@ -106,8 +106,8 @@ class Roa
      * @param string         $method   e.g. GET
      * @param string         $authType when authType is Anonymous, the signature will not be calculate
      * @param string         $pathname pathname of every api
-     * @param array          $query    which contains request params
-     * @param array          $headers  request headers
+     * @param string[]       $query    which contains request params
+     * @param string[]       $headers  request headers
      * @param mixed          $body     content of request
      * @param RuntimeOptions $runtime  which controls some details of call api, such as retry times
      *
@@ -169,7 +169,7 @@ class Roa
                 ], $headers);
                 if (!Utils::isUnset($body)) {
                     $_request->body                    = Utils::toJSONString($body);
-                    $_request->headers['content-type'] = 'application/json; charset=UTF-8;';
+                    $_request->headers['content-type'] = 'application/json; charset=utf-8';
                 }
                 if (!Utils::isUnset($query)) {
                     $_request->query = $query;
@@ -197,8 +197,8 @@ class Roa
                     $err = Utils::assertAsMap($result);
 
                     throw new TeaError([
-                        'code'    => '' . self::defaultAny($err['Code'], $err['code']) . 'Error',
-                        'message' => 'code: ' . $_response->statusCode . ', ' . self::defaultAny($err['Message'], $err['message']) . ' requestid: ' . self::defaultAny($err['RequestId'], $err['requestId']) . '',
+                        'code'    => '' . (string) (self::defaultAny($err['Code'], $err['code'])) . '',
+                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny($err['Message'], $err['message'])) . ' request id: ' . (string) (self::defaultAny($err['RequestId'], $err['requestId'])) . '',
                         'data'    => $err,
                     ]);
                 }
@@ -233,8 +233,8 @@ class Roa
      * @param string         $method   e.g. GET
      * @param string         $authType when authType is Anonymous, the signature will not be calculate
      * @param string         $pathname pathname of every api
-     * @param array          $query    which contains request params
-     * @param array          $headers  request headers
+     * @param string[]       $query    which contains request params
+     * @param string[]       $headers  request headers
      * @param mixed          $body     content of request
      * @param RuntimeOptions $runtime  which controls some details of call api, such as retry times
      *
@@ -297,7 +297,7 @@ class Roa
                 ], $headers);
                 if (!Utils::isUnset($body)) {
                     $_request->body                    = Utils::toJSONString($body);
-                    $_request->headers['content-type'] = 'application/json; charset=UTF-8;';
+                    $_request->headers['content-type'] = 'application/json; charset=utf-8';
                 }
                 if (!Utils::isUnset($query)) {
                     $_request->query = $query;
@@ -325,8 +325,8 @@ class Roa
                     $err = Utils::assertAsMap($result);
 
                     throw new TeaError([
-                        'code'    => '' . self::defaultAny($err['Code'], $err['code']) . 'Error',
-                        'message' => 'code: ' . $_response->statusCode . ', ' . self::defaultAny($err['Message'], $err['message']) . ' requestid: ' . self::defaultAny($err['RequestId'], $err['requestId']) . '',
+                        'code'    => '' . (string) (self::defaultAny($err['Code'], $err['code'])) . '',
+                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny($err['Message'], $err['message'])) . ' request id: ' . (string) (self::defaultAny($err['RequestId'], $err['requestId'])) . '',
                         'data'    => $err,
                     ]);
                 }
@@ -360,9 +360,9 @@ class Roa
      * @param string         $method   e.g. GET
      * @param string         $authType when authType is Anonymous, the signature will not be calculate
      * @param string         $pathname pathname of every api
-     * @param array          $query    which contains request params
-     * @param array          $headers  request headers
-     * @param array          $body     content of request
+     * @param string[]       $query    which contains request params
+     * @param string[]       $headers  request headers
+     * @param mixed[]        $body     content of request
      * @param RuntimeOptions $runtime  which controls some details of call api, such as retry times
      *
      * @throws TeaError
@@ -451,8 +451,8 @@ class Roa
                     $err = Utils::assertAsMap($result);
 
                     throw new TeaError([
-                        'code'    => '' . self::defaultAny($err['Code'], $err['code']) . 'Error',
-                        'message' => 'code: ' . $_response->statusCode . ', ' . self::defaultAny($err['Message'], $err['message']) . ' requestid: ' . self::defaultAny($err['RequestId'], $err['requestId']) . '',
+                        'code'    => '' . (string) (self::defaultAny($err['Code'], $err['code'])) . '',
+                        'message' => 'code: ' . (string) ($_response->statusCode) . ', ' . (string) (self::defaultAny($err['Message'], $err['message'])) . ' request id: ' . (string) (self::defaultAny($err['RequestId'], $err['requestId'])) . '',
                         'data'    => $err,
                     ]);
                 }
