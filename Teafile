@@ -46,7 +46,7 @@
     "clientName": "client",
     "packageInfo": {
       "name": "alibabacloud_tea_roa",
-      "desc": "Aliyun Tea Tea ROA Library for Python",
+      "desc": "Aliyun Tea ROA Library for Python",
       "github": "https://github.com/aliyun/tea-roa",
       "author": "Alibaba Cloud",
       "email": "alibaba-cloud-sdk-dev-team@list.alibaba-inc.com"
