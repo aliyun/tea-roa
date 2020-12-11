@@ -38,7 +38,7 @@ URL = "https://github.com/aliyun/tea-roa"
 VERSION = __import__(PACKAGE).__version__
 REQUIRES = [
     "alibabacloud_tea_util>=0.3.1, <1.0.0",
-    "alibabacloud_credentials>=0.1.1, <1.0.0",
+    "alibabacloud_credentials>=0.1.2, <1.0.0",
     "alibabacloud_roa_util>=0.1.2, <1.0.0"
 ]
 
