@@ -1,3 +1,10 @@
+### 2020-12-11 Version 0.2.0
+* Drop support for python3.4.
+* Drop support for python3.5.
+* Added support for python3.9.
+* Support type annotations.
+* Support async method.
+
 ### 2020-08-31 Version 0.1.2
 
 * Fix non-model object call validate.
