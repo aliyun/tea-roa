@@ -21,6 +21,8 @@ type @suffix = string
 type @productId = string
 type @regionId = string
 type @userAgent = string
+type @sourceIp = string
+type @secureTransport = string
 type @credential = Credential
 
 /**
@@ -43,7 +45,9 @@ model Config {
   maxIdleConns?: number(description='max idle conns',example='3',default=''),
   network?: string(description='network for endpoint',example='public',default='',pattern='^[a-zA-Z0-9_-]+$'),
   suffix?: string(description='suffix for endpoint',example='aliyun',default='',pattern='^[a-zA-Z0-9_-]+$'),
-  type?: string(description='credential type',example='access_key',default='',deprecated=true)
+  type?: string(description='credential type',example='access_key',default='',deprecated=true),
+  sourceIp?: string(description='source ip', example='192.168.0.1', default=''),
+  secureTransport?: string(description='secure transport', example='true', default='false')
 }
 
 /**
@@ -81,7 +85,8 @@ init(config: Config) {
       message = '\'accessKeyId\' and \'accessKeySecret\' or \'credential\' can not be unset'
     };
   }
-  
+  @sourceIp = config.sourceIp;
+  @secureTransport = config.secureTransport;
   @regionId = config.regionId;
   @protocol = config.protocol;
   @endpointHost = config.endpoint;
@@ -122,7 +127,12 @@ api doRequest(version: string, protocol: string, method: string, authType: strin
     // x-sdk-client': helper.DEFAULT_CLIENT
     ...headers
   };
-
+  if (!Util.isUnset(@sourceIp)) {
+    __request.headers.x-acs-source-ip = @sourceIp;
+  }
+  if (!Util.isUnset(@secureTransport)) {
+    __request.headers.x-acs-secure-transport = @secureTransport;
+  }
   if (!Util.isUnset(body)) {
     __request.body = Util.toJSONString(body);
     __request.headers.content-type = 'application/json; charset=utf-8';
@@ -214,7 +224,12 @@ api doRequestWithAction(action: string, version: string, protocol: string, metho
     // x-sdk-client': helper.DEFAULT_CLIENT
     ...headers
   };
-
+  if (!Util.isUnset(@sourceIp)) {
+    __request.headers.x-acs-source-ip = @sourceIp;
+  }
+  if (!Util.isUnset(@secureTransport)) {
+    __request.headers.x-acs-secure-transport = @secureTransport;
+  }
   if (!Util.isUnset(body)) {
     __request.body = Util.toJSONString(body);
     __request.headers.content-type = 'application/json; charset=utf-8';
@@ -304,7 +319,12 @@ api doRequestWithForm(version: string, protocol: string, method: string, authTyp
     // x-sdk-client': helper.DEFAULT_CLIENT
     ...headers
   };
-
+  if (!Util.isUnset(@sourceIp)) {
+    __request.headers.x-acs-source-ip = @sourceIp;
+  }
+  if (!Util.isUnset(@secureTransport)) {
+    __request.headers.x-acs-secure-transport = @secureTransport;
+  }
   if (!Util.isUnset(body)) {
     __request.body = ROAUtil.toForm(body);
     __request.headers.content-type = 'application/x-www-form-urlencoded';
