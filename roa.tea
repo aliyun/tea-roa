@@ -134,10 +134,10 @@ api doRequest(version: string, protocol: string, method: string, authType: strin
     __request.headers.proxy_original_source_ip = @sourceIp;
   }
   if (!Util.isUnset(@secureTransport)) {
-    __request.headers.x-acs-secure-transport = @secureTransport;
+    __request.headers.x-acs-security-transport = @secureTransport;
   }
   if (!Util.isUnset(@secureTransport)) {
-    __request.headers.proxy_original_secure_transport = @secureTransport;
+    __request.headers.proxy_original_security_transport = @secureTransport;
   }
   if (!Util.isUnset(body)) {
     __request.body = Util.toJSONString(body);
@@ -237,10 +237,10 @@ api doRequestWithAction(action: string, version: string, protocol: string, metho
     __request.headers.proxy_original_source_ip = @sourceIp;
   }
   if (!Util.isUnset(@secureTransport)) {
-    __request.headers.x-acs-secure-transport = @secureTransport;
+    __request.headers.x-acs-security-transport = @secureTransport;
   }
   if (!Util.isUnset(@secureTransport)) {
-    __request.headers.proxy_original_secure_transport = @secureTransport;
+    __request.headers.proxy_original_security_transport = @secureTransport;
   }
   if (!Util.isUnset(body)) {
     __request.body = Util.toJSONString(body);
@@ -338,10 +338,10 @@ api doRequestWithForm(version: string, protocol: string, method: string, authTyp
     __request.headers.proxy_original_source_ip = @sourceIp;
   }
   if (!Util.isUnset(@secureTransport)) {
-    __request.headers.x-acs-secure-transport = @secureTransport;
+    __request.headers.x-acs-security-transport = @secureTransport;
   }
   if (!Util.isUnset(@secureTransport)) {
-    __request.headers.proxy_original_secure_transport = @secureTransport;
+    __request.headers.proxy_original_security_transport = @secureTransport;
   }
   if (!Util.isUnset(body)) {
     __request.body = ROAUtil.toForm(body);
