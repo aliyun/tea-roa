@@ -310,8 +310,16 @@ func (client *Client) DoRequest(version *string, protocol *string, method *strin
 				request_.Headers["x-acs-source-ip"] = client.SourceIp
 			}
 
+			if !tea.BoolValue(util.IsUnset(client.SourceIp)) {
+				request_.Headers["proxy_original_source_ip"] = client.SourceIp
+			}
+
 			if !tea.BoolValue(util.IsUnset(client.SecureTransport)) {
-				request_.Headers["x-acs-secure-transport"] = client.SecureTransport
+				request_.Headers["x-acs-security-transport"] = client.SecureTransport
+			}
+
+			if !tea.BoolValue(util.IsUnset(client.SecureTransport)) {
+				request_.Headers["proxy_original_security_transport"] = client.SecureTransport
 			}
 
 			if !tea.BoolValue(util.IsUnset(body)) {
@@ -458,8 +466,16 @@ func (client *Client) DoRequestWithAction(action *string, version *string, proto
 				request_.Headers["x-acs-source-ip"] = client.SourceIp
 			}
 
+			if !tea.BoolValue(util.IsUnset(client.SourceIp)) {
+				request_.Headers["proxy_original_source_ip"] = client.SourceIp
+			}
+
 			if !tea.BoolValue(util.IsUnset(client.SecureTransport)) {
-				request_.Headers["x-acs-secure-transport"] = client.SecureTransport
+				request_.Headers["x-acs-security-transport"] = client.SecureTransport
+			}
+
+			if !tea.BoolValue(util.IsUnset(client.SecureTransport)) {
+				request_.Headers["proxy_original_security_transport"] = client.SecureTransport
 			}
 
 			if !tea.BoolValue(util.IsUnset(body)) {
@@ -604,8 +620,16 @@ func (client *Client) DoRequestWithForm(version *string, protocol *string, metho
 				request_.Headers["x-acs-source-ip"] = client.SourceIp
 			}
 
+			if !tea.BoolValue(util.IsUnset(client.SourceIp)) {
+				request_.Headers["proxy_original_source_ip"] = client.SourceIp
+			}
+
 			if !tea.BoolValue(util.IsUnset(client.SecureTransport)) {
-				request_.Headers["x-acs-secure-transport"] = client.SecureTransport
+				request_.Headers["x-acs-security-transport"] = client.SecureTransport
+			}
+
+			if !tea.BoolValue(util.IsUnset(client.SecureTransport)) {
+				request_.Headers["proxy_original_security_transport"] = client.SecureTransport
 			}
 
 			if !tea.BoolValue(util.IsUnset(body)) {
